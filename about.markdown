@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-I started my PhD in 2018 in the field of Robotics and legged locomotion with focus on designing periodic walking behaviors for bipedal robots. Due to reasons beyond my reach I did not finish the PhD degree and The department of Mechanical Engineering oppfered me a Master's in Science(MSME) degree. Currently, I am working as Controls Engineer in Strider Robotics in Bengaluru, India.
+I am Controls Engineer working at Strider Robotics in Bengaluru, India. My interests lie in robot dynamics, control design, and reinforcement learning(RL). I earned Master's in Science in Mechanical Engineering from University of Delaware, Newark while working in Biorobotics Lab with my advisor Prof. Ioannis Poulakakis.

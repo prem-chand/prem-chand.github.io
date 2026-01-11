@@ -1,20 +1,27 @@
 {{ define "main" }}
 <h1>{{ .Title }}</h1>
-{{ .Content }}
+{{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
 
-{{ if .Pages }}
+{{ $pages := .Pages }}
+{{ if eq .Section "posts" }}
+  {{ $pages = where .Pages "Title" "!=" "" }}
+{{ end }}
+
+{{ if $pages }}
 <ul class="post-list">
-  {{ range .Pages }}
+  {{ range $pages }}
   <li>
     <p class="post-meta">
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
     </p>
     <h2 class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
     {{ if .Summary }}
-    <p>{{ .Summary }}</p>
+    <p class="post-excerpt">{{ .Summary | truncate 200 }}</p>
     {{ end }}
   </li>
   {{ end }}
 </ul>
+{{ else }}
+<p>No posts yet.</p>
 {{ end }}
 {{ end }}

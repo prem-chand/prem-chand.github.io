@@ -3,11 +3,15 @@ languageCode = "en-us"
 title = "Prem Chand"
 
 [params]
-  description = "Personal website and blog"
+  description = "Controls Engineer specializing in robotics, control systems, and reinforcement learning"
   author = "Prem Chand"
   email = "premc946@gmail.com"
   github = "prem-chand"
   twitter = "prem_chand17"
+  linkedin = "prem-chand"
+  role = "Controls Engineer"
+  company = "Strider Robotics"
+  location = "Bengaluru, India"
 
 [markup]
   [markup.goldmark]
@@ -15,6 +19,8 @@ title = "Prem Chand"
       unsafe = true
   [markup.highlight]
     style = "github"
+    lineNos = false
+    noClasses = true
 
 [menu]
   [[menu.main]]

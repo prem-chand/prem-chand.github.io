@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h1>Welcome</h1>
+<p>Welcome to my personal website. I'm Prem Chand, a Controls Engineer passionate about robotics, control design, and reinforcement learning.</p>
+
+{{ if .Site.RegularPages }}
+<h2>Recent Posts</h2>
+<ul class="post-list">
+  {{ range first 5 .Site.RegularPages }}
+  <li>
+    <p class="post-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    </p>
+    <h3 class="post-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
+{{ end }}

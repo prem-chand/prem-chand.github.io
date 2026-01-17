@@ -3,38 +3,41 @@ languageCode = "en-us"
 title = "Prem Chand"
 
 [params]
-  description = "Controls Engineer specializing in robotics, control systems, and reinforcement learning"
-  author = "Prem Chand"
-  email = "premc946@gmail.com"
-  github = "prem-chand"
-  twitter = "prem_chand17"
-  linkedin = "premchand17"
-  role = "Controls Engineer"
-  company = "Strider Robotics"
-  location = "Bengaluru, India"
+description = "Controls Engineer specializing in robotics, control systems, and reinforcement learning"
+author = "Prem Chand"
+email = "premc946@gmail.com"
+github = "prem-chand"
+twitter = "prem_chand17"
+linkedin = "premchand17"
+role = "Controls Engineer"
+company = "Strider Robotics"
+location = "Bengaluru, India"
 
 [markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = true
-  [markup.highlight]
-    style = "monokai"
-    lineNos = false
-    noClasses = true
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+[markup.highlight]
+style = "monokai"
+lineNos = false
+noClasses = true
+[markup.goldmark.parser]
+[markup.goldmark.parser.attribute]
+block = true
 
 [menu]
-  [[menu.main]]
-    identifier = "home"
-    name = "Home"
-    url = "/"
-    weight = 1
-  [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/about/"
-    weight = 2
-  [[menu.main]]
-    identifier = "posts"
-    name = "Posts"
-    url = "/posts/"
-    weight = 3
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = 1
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 2
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 3

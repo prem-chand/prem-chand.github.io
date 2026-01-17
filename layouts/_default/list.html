@@ -9,7 +9,7 @@
 
 {{ if $pages }}
 <ul class="post-list">
-  {{ range $pages }}
+  {{ range $pages.ByDate.Reverse }}
   <li>
     <p class="post-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>

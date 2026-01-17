@@ -38,7 +38,7 @@
 <div class="section">
   <h2 class="section-title">Recent Writing</h2>
   <ul class="post-list">
-    {{ range first 5 $posts }}
+    {{ range first 5 ($posts.ByDate.Reverse) }}
     <li>
       <p class="post-meta">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>

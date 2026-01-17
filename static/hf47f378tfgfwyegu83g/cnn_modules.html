@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Learning Modules</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .progress-section {
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .module {
+            margin-bottom: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .module:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .module-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .module-header h2 {
+            font-size: 1.4em;
+        }
+        
+        .module-header .duration {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .module-content {
+            padding: 25px;
+            background: white;
+        }
+        
+        .module-content.collapsed {
+            display: none;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 1.1em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.2s ease;
+        }
+        
+        .item:hover {
+            background: #e9ecef;
+        }
+        
+        .item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 4px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+        
+        .item label {
+            cursor: pointer;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        
+        .item.completed label {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .project-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .project-box strong {
+            color: #856404;
+        }
+        
+        .resource-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-icon.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            color: #1565C0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Convolutional Neural Networks</h1>
+            <p>Building Strong Deep Learning Fundamentals</p>
+        </div>
+        
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="progress-text" id="progressText">0 of 0 items completed</div>
+        </div>
+        
+        <div class="content">
+            <!-- Module 1 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>Module 1: Foundations of Convolution</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">~1 week</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Core Concepts</div>
+                        <div class="item">
+                            <input type="checkbox" id="item1" onchange="updateProgress()">
+                            <label for="item1">Understand discrete convolution operation: mathematical definition, 1D and 2D cases</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item2" onchange="updateProgress()">
+                            <label for="item2">Study cross-correlation vs convolution (and why CNNs use cross-correlation)</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item3" onchange="updateProgress()">
+                            <label for="item3">Learn padding (valid, same, full) and stride mechanics with output size calculations</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item4" onchange="updateProgress()">
+                            <label for="item4">Master receptive field concept and calculations for multi-layer networks</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item5" onchange="updateProgress()">
+                            <label for="item5">Understand parameter sharing and translation equivariance properties</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Mathematical Foundations</div>
+                        <div class="item">
+                            <input type="checkbox" id="item6" onchange="updateProgress()">
+                            <label for="item6">Derive forward pass equations for convolutional layers</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item7" onchange="updateProgress()">
+                            <label for="item7">Work through gradient computation for convolution (∂L/∂W, ∂L/∂x)</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item8" onchange="updateProgress()">
+                            <label for="item8">Understand how backpropagation flows through conv layers using chain rule</label>
+                        </div>
+                    </div>
+                    
+                    <div class="project-box">
+                        <strong>📋 Hands-on Exercise:</strong> Implement 2D convolution from scratch in NumPy (forward and backward pass). Test against PyTorch's Conv2d layer.
+                    </div>
+                    
+                    <div class="note">
+                        <strong>Resources:</strong> Justin Johnson's lectures on CNNs, CS231n notes on convolution, Goodfellow et al. Deep Learning book Chapter 9
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>Module 2: CNN Architecture Components</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">~1.5 weeks</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Pooling Operations</div>
+                        <div class="item">
+                            <input type="checkbox" id="item9" onchange="updateProgress()">
+                            <label for="item9">Study max pooling, average pooling, and global pooling operations</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item10" onchange="updateProgress()">
+                            <label for="item10">Understand pooling's role in spatial invariance and dimensionality reduction</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item11" onchange="updateProgress()">
+                            <label for="item11">Derive backpropagation through max pooling and average pooling layers</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Normalization Techniques</div>
+                        <div class="item">
+                            <input type="checkbox" id="item12" onchange="updateProgress()">
+                            <label for="item12">Master Batch Normalization: mathematical formulation, forward/backward pass</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item13" onchange="updateProgress()">
+                            <label for="item13">Understand Layer Normalization, Instance Normalization, Group Normalization</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item14" onchange="updateProgress()">
+                            <label for="item14">Study the role of normalization in training stability and convergence</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Activation Functions & Design Patterns</div>
+                        <div class="item">
+                            <input type="checkbox" id="item15" onchange="updateProgress()">
+                            <label for="item15">Compare ReLU, Leaky ReLU, PReLU, ELU, and GELU activations</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item16" onchange="updateProgress()">
+                            <label for="item16">Learn 1×1 convolutions and their applications (dimensionality reduction, channel mixing)</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item17" onchange="updateProgress()">
+                            <label for="item17">Study dilated/atrous convolutions and receptive field expansion</label>
+                        </div>
+                    </div>
+                    
+                    <div class="project-box">
+                        <strong>📋 Hands-on Exercise:</strong> Build a modular CNN from scratch (conv, pooling, BatchNorm, activations) and train on CIFAR-10. Compare training dynamics with/without BatchNorm.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>Module 3: Classic CNN Architectures</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">~2 weeks</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Historical Foundations</div>
+                        <div class="item">
+                            <input type="checkbox" id="item18" onchange="updateProgress()">
+                            <label for="item18">Study LeNet-5 architecture and its design principles</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item19" onchange="updateProgress()">
+                            <label for="item19">Deep dive into AlexNet: architecture, innovations (ReLU, dropout, data augmentation)</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item20" onchange="updateProgress()">
+                            <label for="item20">Analyze VGGNet: depth vs width, 3×3 conv stacking, parameter efficiency</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Modern Breakthroughs</div>
+                        <div class="item">
+                            <input type="checkbox" id="item21" onchange="updateProgress()">
+                            <label for="item21">Master ResNet: residual connections, skip connections, degradation problem solution</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item22" onchange="updateProgress()">
+                            <label for="item22">Study Inception/GoogLeNet: multi-scale processing, 1×1 bottlenecks, auxiliary classifiers</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item23" onchange="updateProgress()">
+                            <label for="item23">Understand DenseNet: dense connectivity patterns and their benefits</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item24" onchange="updateProgress()">
+                            <label for="item24">Explore MobileNet/EfficientNet: efficient architectures for resource-constrained settings</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Architectural Patterns</div>
+                        <div class="item">
+                            <input type="checkbox" id="item25" onchange="updateProgress()">
+                            <label for="item25">Compare architectural design choices: depth, width, skip connections, branching</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item26" onchange="updateProgress()">
+                            <label for="item26">Study the evolution of ImageNet architectures and key insights from each era</label>
+                        </div>
+                    </div>
+                    
+                    <div class="project-box">
+                        <strong>📋 Hands-on Exercise:</strong> Implement ResNet-18 from scratch and train on CIFAR-100. Compare training curves with/without residual connections. Analyze gradient flow.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>Module 4: Training CNNs at Scale</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">~1.5 weeks</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Optimization & Regularization</div>
+                        <div class="item">
+                            <input type="checkbox" id="item27" onchange="updateProgress()">
+                            <label for="item27">Master SGD with momentum, RMSprop, Adam, AdamW for CNN training</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item28" onchange="updateProgress()">
+                            <label for="item28">Study learning rate schedules: step decay, cosine annealing, warm restarts</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item29" onchange="updateProgress()">
+                            <label for="item29">Learn regularization techniques: L2/L1 weight decay, dropout, drop-path, label smoothing</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item30" onchange="updateProgress()">
+                            <label for="item30">Understand data augmentation: geometric transforms, color jittering, mixup, cutmix</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Initialization & Training Dynamics</div>
+                        <div class="item">
+                            <input type="checkbox" id="item31" onchange="updateProgress()">
+                            <label for="item31">Study weight initialization: Xavier/Glorot, He initialization, layer-wise considerations</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item32" onchange="updateProgress()">
+                            <label for="item32">Understand gradient flow problems: vanishing/exploding gradients, solutions</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item33" onchange="updateProgress()">
+                            <label for="item33">Learn debugging techniques: gradient checking, activation statistics, loss landscapes</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Transfer Learning & Fine-tuning</div>
+                        <div class="item">
+                            <input type="checkbox" id="item34" onchange="updateProgress()">
+                            <label for="item34">Master transfer learning principles: when/how to use pretrained models</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item35" onchange="updateProgress()">
+                            <label for="item35">Study fine-tuning strategies: layer freezing, discriminative learning rates, progressive unfreezing</label>
+                        </div>
+                    </div>
+                    
+                    <div class="project-box">
+                        <strong>📋 Hands-on Exercise:</strong> Train a CNN on a small dataset using transfer learning from ImageNet-pretrained ResNet. Experiment with different fine-tuning strategies and data augmentation techniques.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>Module 5: Advanced Topics & Applications</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">~2 weeks</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Visualization & Interpretability</div>
+                        <div class="item">
+                            <input type="checkbox" id="item36" onchange="updateProgress()">
+                            <label for="item36">Learn filter visualization techniques and what CNNs "see" at different layers</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item37" onchange="updateProgress()">
+                            <label for="item37">Study Grad-CAM, saliency maps, and attention visualization methods</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item38" onchange="updateProgress()">
+                            <label for="item38">Understand adversarial examples and robustness challenges in CNNs</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Object Detection Basics</div>
+                        <div class="item">
+                            <input type="checkbox" id="item39" onchange="updateProgress()">
+                            <label for="item39">Study R-CNN family: R-CNN, Fast R-CNN, Faster R-CNN architectures</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item40" onchange="updateProgress()">
+                            <label for="item40">Learn single-shot detectors: YOLO, SSD principles and trade-offs</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item41" onchange="updateProgress()">
+                            <label for="item41">Understand anchor boxes, non-maximum suppression, IoU metrics</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Semantic Segmentation</div>
+                        <div class="item">
+                            <input type="checkbox" id="item42" onchange="updateProgress()">
+                            <label for="item42">Study fully convolutional networks (FCN) for dense prediction</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item43" onchange="updateProgress()">
+                            <label for="item43">Learn U-Net architecture and encoder-decoder patterns</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item44" onchange="updateProgress()">
+                            <label for="item44">Understand transposed convolutions/deconvolutions for upsampling</label>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">CNNs for Robotics & Control</div>
+                        <div class="item">
+                            <input type="checkbox" id="item45" onchange="updateProgress()">
+                            <label for="item45">Explore CNN feature extractors for RL observation spaces (vision-based policies)</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item46" onchange="updateProgress()">
+                            <label for="item46">Study depth estimation networks for terrain awareness</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item47" onchange="updateProgress()">
+                            <label for="item47">Learn temporal CNNs and 3D CNNs for video/sequence processing</label>
+                        </div>
+                    </div>
+                    
+                    <div class="project-box">
+                        <strong>📋 Final Project:</strong> Build an end-to-end vision system for a robotics application (e.g., terrain classification for quadruped locomotion, obstacle detection). Integrate with a simple RL policy or control system.
+                    </div>
+                    
+                    <div class="note">
+                        <strong>Connection to your work:</strong> This module directly relates to terrain-aware locomotion policies - CNNs can process heightmaps or camera feeds to enable more autonomous, perception-based control.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Knowledge Checks -->
+            <div class="module">
+                <div class="module-header" onclick="toggleModule(this)">
+                    <div>
+                        <h2>📝 Knowledge Checks & Milestones</h2>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <span class="duration">Ongoing</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="section">
+                        <div class="section-title">Regular Self-Assessment</div>
+                        <div class="item">
+                            <input type="checkbox" id="item48" onchange="updateProgress()">
+                            <label for="item48">After Module 1: Derive conv backward pass on paper, explain receptive field growth</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item49" onchange="updateProgress()">
+                            <label for="item49">After Module 2: Implement BatchNorm from scratch, explain why it helps training</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item50" onchange="updateProgress()">
+                            <label for="item50">After Module 3: Explain ResNet's motivation, draw architecture diagrams from memory</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item51" onchange="updateProgress()">
+                            <label for="item51">After Module 4: Debug a failing CNN training run, optimize hyperparameters</label>
+                        </div>
+                        <div class="item">
+                            <input type="checkbox" id="item52" onchange="updateProgress()">
+                            <label for="item52">After Module 5: Design a CNN architecture for a new problem from scratch</label>
+                        </div>
+                    </div>
+                    
+                    <div class="note">
+                        <strong>Suggested pace:</strong> Complete knowledge checks at the end of each module before proceeding. These ensure you're building on solid foundations.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved progress from localStorage
+        function loadProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const saved = localStorage.getItem(checkbox.id);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                    checkbox.parentElement.classList.add('completed');
+                }
+            });
+            updateProgress();
+        }
+
+        // Save progress to localStorage
+        function saveProgress(id, checked) {
+            localStorage.setItem(id, checked);
+        }
+
+        // Update progress bar and text
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+            const percentage = Math.round((checked / total) * 100);
+            
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+            progressText.textContent = `${checked} of ${total} items completed`;
+            
+            // Update completed styling
+            checkboxes.forEach(checkbox => {
+                const item = checkbox.parentElement;
+                if (checkbox.checked) {
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('completed');
+                }
+                saveProgress(checkbox.id, checkbox.checked);
+            });
+        }
+
+        // Toggle module expansion
+        function toggleModule(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('expanded');
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            
+            // Expand first module by default
+            const firstModule = document.querySelector('.module-header');
+            if (firstModule) {
+                const icon = firstModule.querySelector('.toggle-icon');
+                icon.classList.add('expanded');
+            }
+        });
+    </script>
+</body>
+</html>

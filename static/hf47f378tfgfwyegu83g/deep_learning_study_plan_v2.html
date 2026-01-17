@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Learning Mastery - University Level</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .progress-overview {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .progress-bar-container {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            color: #6c757d;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .intro-section {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .intro-section h2 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+        
+        .intro-section ul {
+            margin-left: 20px;
+        }
+        
+        .intro-section li {
+            margin: 8px 0;
+        }
+        
+        .phase {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+        }
+        
+        .phase.completed::before {
+            background: #667eea;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .phase-header h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            flex: 1;
+        }
+        
+        .phase-duration {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .toggle-btn {
+            background: #e9ecef;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background 0.3s;
+        }
+        
+        .toggle-btn:hover {
+            background: #dee2e6;
+        }
+        
+        .phase-content {
+            margin-top: 20px;
+        }
+        
+        .phase-content.collapsed {
+            display: none;
+        }
+        
+        .resource-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .resource-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .resource-item label {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            cursor: pointer;
+        }
+        
+        .resource-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .resource-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 15px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .resource-link:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .milestone {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .milestone h3 {
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+        
+        .tips {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .tips h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .tips ul {
+            margin-left: 20px;
+        }
+        
+        .tips li {
+            margin: 8px 0;
+        }
+        
+        .project-idea {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .project-idea h4 {
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .reset-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background: #c0392b;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Deep Learning Mastery</h1>
+            <p>University-Level Curriculum • Free Resources • Rigorous & Fast-Paced</p>
+        </div>
+        
+        <div class="progress-overview">
+            <h2>Overall Progress</h2>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="overallProgress">0%</div>
+            </div>
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="completedCount">0</h3>
+                    <p>Resources Completed</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalCount">0</h3>
+                    <p>Total Resources</p>
+                </div>
+                <div class="stat-card">
+                    <h3>16-20</h3>
+                    <p>Weeks (Est.)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="intro-section">
+                <h2>📖 Study Plan Philosophy</h2>
+                <p><strong>This plan emphasizes:</strong></p>
+                <ul>
+                    <li>✅ <strong>100% Free:</strong> No paid courses—all resources from top universities</li>
+                    <li>✅ <strong>University-Level Rigor:</strong> Semester-paced, math-heavy, implementation-focused</li>
+                    <li>✅ <strong>Modern & Updated:</strong> Recent course materials (2022-2024)</li>
+                    <li>✅ <strong>Robotics Integration:</strong> Projects tailored for quadruped locomotion</li>
+                </ul>
+                <p><strong>Time commitment:</strong> 15-20 hours/week (comparable to 2 university courses)</p>
+                <p><strong>Prerequisites:</strong> Python, basic ML/calculus/linear algebra, PyTorch basics</p>
+            </div>
+            
+            <!-- Semester 1 -->
+            <div class="phase" data-phase="1">
+                <div class="phase-header" onclick="togglePhase(1)">
+                    <h2>Semester 1: Michigan EECS 498 (Justin Johnson)</h2>
+                    <span class="phase-duration">12-14 weeks</span>
+                    <button class="toggle-btn">−</button>
+                </div>
+                <div class="phase-content" id="phase1">
+                    <p><strong>Course:</strong> Deep Learning for Computer Vision</p>
+                    <p><strong>Why this course:</strong> Justin Johnson co-taught Stanford CS231n and created this as an improved version. Excellent assignments, clear teaching, comprehensive coverage from basics to SOTA.</p>
+                    
+                    <div class="resource-list">
+                        <h3>📺 Lectures & Assignments (All Free on YouTube)</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-setup">
+                                <span><strong>Week 0:</strong> Setup, Python/NumPy/PyTorch Tutorial</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/" target="_blank" class="resource-link">Site</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec1-2">
+                                <span><strong>Weeks 1-2:</strong> Image Classification, Linear Classifiers, Loss Functions</span>
+                            </label>
+                            <a href="https://www.youtube.com/playlist?list=PL5-TkQAfAZFbzxjBHtzdVCWE0Zbhomg7r" target="_blank" class="resource-link">Videos</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-a1">
+                                <span><strong>Assignment 1:</strong> k-NN, SVM, Softmax, Two-Layer Net (from scratch)</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment1.html" target="_blank" class="resource-link">A1</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec3-4">
+                                <span><strong>Weeks 3-4:</strong> Optimization, Backpropagation, Neural Networks</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec5-6">
+                                <span><strong>Weeks 5-6:</strong> Convolutional Networks, CNN Architectures</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-a2">
+                                <span><strong>Assignment 2:</strong> Fully-Connected Nets, BatchNorm, Dropout, CNNs</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment2.html" target="_blank" class="resource-link">A2</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec7-8">
+                                <span><strong>Weeks 7-8:</strong> Training NNs (Part 1 & 2), Hardware/Software</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-a3">
+                                <span><strong>Assignment 3:</strong> Network Visualization, Image Captioning, RNN/LSTM</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment3.html" target="_blank" class="resource-link">A3</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec9-10">
+                                <span><strong>Weeks 9-10:</strong> Recurrent Networks, Attention, Transformers</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec11-12">
+                                <span><strong>Weeks 11-12:</strong> Object Detection, Segmentation, 3D Vision</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-a4">
+                                <span><strong>Assignment 4:</strong> Attention, Transformers, Object Detection</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment4.html" target="_blank" class="resource-link">A4</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-lec13-14">
+                                <span><strong>Weeks 13-14:</strong> Generative Models (Autoencoders, VAE, GAN, Diffusion)</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="umich-a5">
+                                <span><strong>Assignment 5:</strong> Self-Supervised Learning, GANs, Diffusion Models</span>
+                            </label>
+                            <a href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment5.html" target="_blank" class="resource-link">A5</a>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-list">
+                        <h3>📚 Companion Reading</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="dl-book-6-8">
+                                <span>Deep Learning Book Ch. 6-8: Networks, Regularization, Optimization</span>
+                            </label>
+                            <a href="https://www.deeplearningbook.org/" target="_blank" class="resource-link">Free</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="dl-book-9-10">
+                                <span>Deep Learning Book Ch. 9-10: CNNs, RNNs</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="milestone">
+                        <h3>🎯 Semester 1 Project</h3>
+                        <p><strong>Vision-Based Terrain Classification for Quadruped Locomotion</strong></p>
+                        <ul>
+                            <li>Train a CNN to classify terrain from camera (flat/rough/stairs/slopes)</li>
+                            <li>Integrate with IsaacLab - feed predictions to your RL policy</li>
+                            <li>Compare: blind policy vs vision-guided policy performance</li>
+                            <li>Implement real-time inference pipeline in simulation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tips">
+                        <h3>💡 How to Succeed in Semester 1</h3>
+                        <ul>
+                            <li><strong>Watch at 1.5x:</strong> Justin's teaching is crystal-clear</li>
+                            <li><strong>Do assignments without solutions first:</strong> Struggle builds understanding</li>
+                            <li><strong>Derive gradients by hand:</strong> Essential for backprop intuition</li>
+                            <li><strong>Connect to RL:</strong> Notice policy gradient ↔ gradient descent parallels</li>
+                            <li><strong>Weekly: </strong>3 lectures (6hrs), 1 assignment section (8hrs), reading (3hrs), project (3hrs)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Semester 2 Option A -->
+            <div class="phase" data-phase="2">
+                <div class="phase-header" onclick="togglePhase(2)">
+                    <h2>Semester 2A: NYU Deep Learning (Yann LeCun)</h2>
+                    <span class="phase-duration">12-14 weeks</span>
+                    <button class="toggle-btn">−</button>
+                </div>
+                <div class="phase-content" id="phase2">
+                    <p><strong>Course:</strong> DS-GA 1008 Deep Learning</p>
+                    <p><strong>Why this course:</strong> Taught by Turing Award winner Yann LeCun. Emphasizes energy-based models framework—a unified theory of deep learning. More theoretical and research-focused.</p>
+                    
+                    <div class="resource-list">
+                        <h3>📺 Course Materials</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-week1-2">
+                                <span><strong>Weeks 1-2:</strong> Motivation, History, Gradient Descent</span>
+                            </label>
+                            <a href="https://atcold.github.io/NYU-DLSP21/" target="_blank" class="resource-link">Site</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-week3-5">
+                                <span><strong>Weeks 3-5:</strong> Neural Nets, CNNs, Optimization</span>
+                            </label>
+                            <a href="https://www.youtube.com/watch?v=mTtDfKgLm54&list=PLLHTzKZzVU9e6xUfG10TkTWApKSZCzuBI" target="_blank" class="resource-link">Videos</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-week6-8">
+                                <span><strong>Weeks 6-8:</strong> Energy-Based Models, SSL, Autoencoders</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-week9-11">
+                                <span><strong>Weeks 9-11:</strong> Latent Variables, Contrastive Methods, Regularization</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-week12-14">
+                                <span><strong>Weeks 12-14:</strong> Attention, Transformers, Graph Networks</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="nyu-practicals">
+                                <span><strong>Complete all 14 PyTorch Practicals/Notebooks</strong></span>
+                            </label>
+                            <a href="https://github.com/Atcold/NYU-DLSP21" target="_blank" class="resource-link">GitHub</a>
+                        </div>
+                    </div>
+                    
+                    <div class="milestone">
+                        <h3>🎯 Semester 2A Project</h3>
+                        <p><strong>Self-Supervised Terrain Representation Learning</strong></p>
+                        <ul>
+                            <li>Use contrastive learning (SimCLR/MoCo) on unlabeled terrain images</li>
+                            <li>Learn robust visual features without manual annotations</li>
+                            <li>Transfer to downstream tasks: terrain classification, depth estimation</li>
+                            <li>Compare: supervised vs self-supervised feature quality for RL policies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Semester 2 Option B -->
+            <div class="phase" data-phase="3">
+                <div class="phase-header" onclick="togglePhase(3)">
+                    <h2>Semester 2B: Stanford CS224N (Christopher Manning)</h2>
+                    <span class="phase-duration">12-14 weeks</span>
+                    <button class="toggle-btn">−</button>
+                </div>
+                <div class="phase-content" id="phase3">
+                    <p><strong>Course:</strong> Natural Language Processing with Deep Learning</p>
+                    <p><strong>Why this course:</strong> Best NLP course available. Covers transformers, attention, and modern LLMs. Highly relevant for multi-modal robotics (vision + language).</p>
+                    
+                    <div class="resource-list">
+                        <h3>📺 Lectures & Assignments</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-week1-2">
+                                <span><strong>Weeks 1-2:</strong> Word Vectors, Word2Vec, SVD</span>
+                            </label>
+                            <a href="https://web.stanford.edu/class/cs224n/" target="_blank" class="resource-link">Site</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-a1">
+                                <span><strong>Assignment 1:</strong> Exploring Word Vectors</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-week3-4">
+                                <span><strong>Weeks 3-4:</strong> Backprop, Dependency Parsing, Language Models</span>
+                            </label>
+                            <a href="https://www.youtube.com/playlist?list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4" target="_blank" class="resource-link">2024 Videos</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-a2-a3">
+                                <span><strong>Assignments 2-3:</strong> Word2Vec, Dependency Parsing</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-week5-7">
+                                <span><strong>Weeks 5-7:</strong> RNNs, LSTMs, Vanishing Gradients, Translation</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-a4">
+                                <span><strong>Assignment 4:</strong> Neural Machine Translation with Seq2Seq</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-week8-10">
+                                <span><strong>Weeks 8-10:</strong> Attention, Transformers, BERT, GPT</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-a5">
+                                <span><strong>Assignment 5:</strong> Self-Attention, Transformers, Pretraining</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-week11-12">
+                                <span><strong>Weeks 11-12:</strong> Question Answering, Large Language Models</span>
+                            </label>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="cs224n-project">
+                                <span><strong>Final Project:</strong> SQuAD Question Answering (Default Project)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="milestone">
+                        <h3>🎯 Semester 2B Project</h3>
+                        <p><strong>Language-Conditioned Quadruped Control</strong></p>
+                        <ul>
+                            <li>Fine-tune a small transformer (BERT/DistilBERT) to understand locomotion commands</li>
+                            <li>Map commands → action parameters: "walk slowly uphill", "trot on flat ground"</li>
+                            <li>Build multi-modal policy: text encoder + vision encoder + control network</li>
+                            <li>Test in IsaacLab with natural language task specifications</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="project-idea">
+                        <h4>🤖 NLP Applications for Robotics:</h4>
+                        <p>• Instruction following ("navigate to the red box")</p>
+                        <p>• Trajectory description generation for logging</p>
+                        <p>• Attention for multi-sensor fusion</p>
+                        <p>• Sequence-to-sequence for motion planning</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Supplementary -->
+            <div class="phase" data-phase="4">
+                <div class="phase-header" onclick="togglePhase(4)">
+                    <h2>📚 Essential Papers & Resources</h2>
+                    <span class="phase-duration">Ongoing</span>
+                    <button class="toggle-btn">−</button>
+                </div>
+                <div class="phase-content" id="phase4">
+                    <div class="resource-list">
+                        <h3>Must-Read Papers</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-alexnet">
+                                <span>AlexNet (2012) - ImageNet Classification with Deep CNNs</span>
+                            </label>
+                            <a href="https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html" target="_blank" class="resource-link">Read</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-resnet">
+                                <span>ResNet (2015) - Deep Residual Learning</span>
+                            </label>
+                            <a href="https://arxiv.org/abs/1512.03385" target="_blank" class="resource-link">Read</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-attention">
+                                <span>Attention Is All You Need (2017) - Transformers</span>
+                            </label>
+                            <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="resource-link">Read</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-vit">
+                                <span>Vision Transformer (2020) - ViT</span>
+                            </label>
+                            <a href="https://arxiv.org/abs/2010.11929" target="_blank" class="resource-link">Read</a>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-list">
+                        <h3>Robotics + Deep Learning Papers</h3>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-loco">
+                                <span>Learning Quadrupedal Locomotion over Challenging Terrain (ETH/Nvidia)</span>
+                            </label>
+                            <a href="https://arxiv.org/abs/2010.11251" target="_blank" class="resource-link">Read</a>
+                        </div>
+                        <div class="resource-item">
+                            <label>
+                                <input type="checkbox" class="resource-check" data-resource="paper-visual-loco">
+                                <span>Learning Vision-Based Quadrupedal Locomotion</span>
+                            </label>
+                            <a href="https://arxiv.org/abs/2103.14295" target="_blank" class="resource-link">Read</a>
+                        </div>
+                    </div>
+                    
+                    <div class="tips">
+                        <h3>💡 Study Tips for University-Paced Learning</h3>
+                        <ul>
+                            <li><strong>Implement everything from scratch first:</strong> Then use libraries</li>
+                            <li><strong>Derive all math:</strong> Gradients, loss functions, backprop - by hand</li>
+                            <li><strong>Debug intensely:</strong> University courses expect you to struggle</li>
+                            <li><strong>Use office hours:</strong> Course forums, Discord communities, GitHub discussions</li>
+                            <li><strong>Build in public:</strong> Blog posts, GitHub repos, Twitter threads</li>
+                            <li><strong>Paper reading:</strong> 1-2 papers/week minimum</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tips">
+                        <h3>🚀 Next Steps After Completion</h3>
+                        <ul>
+                            <li>Berkeley CS285: Deep Reinforcement Learning</li>
+                            <li>Reproduce papers in legged robotics + deep learning</li>
+                            <li>Contribute to IsaacLab, PyTorch, or other DL frameworks</li>
+                            <li>Read NeurIPS/ICML/ICLR/CoRL papers in your research area</li>
+                            <li>Start a research project combining DL + RL for robotics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <h3>🎯 Your Deep Learning Journey</h3>
+            <p><strong>Recommended Path:</strong> EECS 498 (Semester 1) → NYU or CS224N (Semester 2)</p>
+            <p><strong>Total Time:</strong> 16-20 weeks @ 15-20 hrs/week</p>
+            <p><strong>All Free:</strong> YouTube videos, course websites, open textbooks</p>
+            <p><strong>You've got this! 💪</strong></p>
+            <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+        </div>
+    </div>
+    
+    <script>
+        function loadProgress() {
+            const checkboxes = document.querySelectorAll('.resource-check');
+            checkboxes.forEach(checkbox => {
+                const resourceId = checkbox.dataset.resource;
+                const saved = localStorage.getItem(resourceId);
+                if (saved === 'true') checkbox.checked = true;
+            });
+            updateProgress();
+        }
+        
+        function saveProgress(resourceId, checked) {
+            localStorage.setItem(resourceId, checked);
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.resource-check');
+            const total = checkboxes.length;
+            let completed = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) completed++;
+            });
+            
+            const percentage = Math.round((completed / total) * 100);
+            document.getElementById('overallProgress').style.width = percentage + '%';
+            document.getElementById('overallProgress').textContent = percentage + '%';
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('totalCount').textContent = total;
+            updatePhaseCompletion();
+        }
+        
+        function updatePhaseCompletion() {
+            document.querySelectorAll('.phase').forEach(phase => {
+                const checkboxes = phase.querySelectorAll('.resource-check');
+                const total = checkboxes.length;
+                let completed = 0;
+                checkboxes.forEach(cb => { if (cb.checked) completed++; });
+                if (completed === total && total > 0) {
+                    phase.classList.add('completed');
+                } else {
+                    phase.classList.remove('completed');
+                }
+            });
+        }
+        
+        function togglePhase(phaseNum) {
+            const content = document.getElementById('phase' + phaseNum);
+            const btn = content.previousElementSibling.querySelector('.toggle-btn');
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                btn.textContent = '−';
+            } else {
+                content.classList.add('collapsed');
+                btn.textContent = '+';
+            }
+        }
+        
+        function resetProgress() {
+            if (confirm('Reset all progress? This cannot be undone.')) {
+                localStorage.clear();
+                document.querySelectorAll('.resource-check').forEach(cb => cb.checked = false);
+                updateProgress();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            document.querySelectorAll('.resource-check').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    saveProgress(this.dataset.resource, this.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

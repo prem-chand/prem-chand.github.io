@@ -254,8 +254,8 @@ code {
 }
 
 pre {
-  background-color: #1f2937;
-  color: #e5e7eb;
+  background-color: #282c34 !important;
+  color: #abb2bf;
   padding: 1.25rem 1.5rem;
   border-radius: 8px;
   overflow-x: auto;
@@ -264,10 +264,26 @@ pre {
 }
 
 pre code {
-  background: none;
+  background: none !important;
   padding: 0;
   border: none;
   color: inherit;
+}
+
+/* Override Hugo syntax highlighting for better contrast */
+pre code span {
+  background: none !important;
+}
+
+/* Article images - constrained to content width */
+article img {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 blockquote {

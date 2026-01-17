@@ -18,7 +18,7 @@ title = "Prem Chand"
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    style = "github"
+    style = "monokai"
     lineNos = false
     noClasses = true
 

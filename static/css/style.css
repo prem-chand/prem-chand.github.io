@@ -13,6 +13,24 @@
   --container-width: 1000px;
   --header-height: 70px;
   --transition: 0.2s ease;
+  --code-bg: #282c34;
+  --header-bg: rgba(255, 255, 255, 0.95);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --primary-color: #60a5fa;
+  --primary-light: #93c5fd;
+  --primary-dark: #3b82f6;
+  --accent-color: #1e3a5f;
+  --text-color: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --light-text: #9ca3af;
+  --background-color: #111827;
+  --surface-color: #1f2937;
+  --border-color: #374151;
+  --code-bg: #0d1117;
+  --header-bg: rgba(17, 24, 39, 0.95);
 }
 
 * {
@@ -40,7 +58,7 @@ body {
 /* Header styles */
 header.site-header {
   height: var(--header-height);
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--header-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-color);
@@ -92,6 +110,46 @@ nav li a {
 
 nav li a:hover {
   color: var(--primary-color);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.theme-toggle:hover {
+  background-color: var(--surface-color);
+  color: var(--primary-color);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.theme-toggle .sun-icon {
+  display: none;
+}
+
+.theme-toggle .moon-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle .sun-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
+  display: none;
 }
 
 /* Main content styles */
@@ -254,7 +312,7 @@ code {
 }
 
 pre {
-  background-color: #282c34 !important;
+  background-color: var(--code-bg) !important;
   color: #abb2bf;
   padding: 1.25rem 1.5rem;
   border-radius: 8px;
@@ -304,6 +362,39 @@ blockquote p {
 .katex-display {
   padding: 1.5rem 0;
   overflow-x: auto;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid var(--border-color);
+}
+
+th {
+  background-color: var(--surface-color);
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+td {
+  color: var(--text-secondary);
+}
+
+tr:nth-child(even) {
+  background-color: var(--surface-color);
+}
+
+/* Dark mode image adjustments */
+[data-theme="dark"] article img {
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Post list styles */

@@ -22,8 +22,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+  <!-- Custom CSS with cache busting -->
+  {{ $css := resources.Get "css/style.css" }}
+  {{ $css = $css | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
   <!-- Mermaid JS -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

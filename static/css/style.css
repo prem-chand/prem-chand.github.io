@@ -162,11 +162,39 @@ main {
   padding: 4rem 2rem;
 }
 
+/* Profile photo */
+.profile-photo {
+  width: 220px;
+  height: 280px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-photo-about {
+  float: right;
+  margin: 0 0 1.5rem 2rem;
+  width: 200px;
+  height: 250px;
+}
+
+[data-theme="dark"] .profile-photo {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 /* Hero section */
 .hero {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
   padding: 3rem 0 4rem;
   margin-bottom: 2rem;
+}
+
+.hero-content {
+  flex: 1;
 }
 
 .hero-title {
@@ -189,13 +217,12 @@ main {
   font-size: 1.1rem;
   color: var(--light-text);
   max-width: 600px;
-  margin: 0 auto 2rem;
+  margin: 0 0 2rem;
   line-height: 1.8;
 }
 
 .hero-links {
   display: flex;
-  justify-content: center;
   gap: 1.5rem;
   flex-wrap: wrap;
 }
@@ -275,6 +302,7 @@ p {
   margin-bottom: 1.5rem;
   font-size: 1.05rem;
   color: var(--text-secondary);
+  text-align: justify;
 }
 
 a {
@@ -526,14 +554,7 @@ tr:nth-child(even) {
 }
 
 /* About page styles */
-.about-content {
-  max-width: 700px;
-}
-
-.about-content p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
+/* About page inherits main container width */
 
 .skills-grid {
   display: grid;
@@ -672,7 +693,33 @@ footer a:hover {
   }
 
   .hero {
+    flex-direction: column-reverse;
+    text-align: center;
     padding: 2rem 0 3rem;
+    gap: 2rem;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-links {
+    justify-content: center;
+  }
+
+  .profile-photo {
+    width: 180px;
+    height: 220px;
+  }
+
+  .profile-photo-about {
+    float: none;
+    display: block;
+    margin: 0 auto 1.5rem;
+    width: 160px;
+    height: 200px;
   }
 
   .hero-title {

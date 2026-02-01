@@ -14,16 +14,22 @@ company = "Strider Robotics"
 location = "Bengaluru, India"
 
 [markup]
-[markup.goldmark]
-[markup.goldmark.renderer]
-unsafe = true
-[markup.highlight]
-style = "monokai"
-lineNos = false
-noClasses = true
-[markup.goldmark.parser]
-[markup.goldmark.parser.attribute]
-block = true
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)'], ['$', '$']]
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+    noClasses = true
 
 [menu]
 [[menu.main]]

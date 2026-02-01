@@ -72,7 +72,7 @@
           {{ end }}
         </ul>
       </nav>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
         <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
           <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
         </svg>
@@ -117,19 +117,25 @@
 
   <!-- Theme toggle handler -->
   <script>
-    document.getElementById('theme-toggle').addEventListener('click', function() {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          var html = document.documentElement;
+          var currentTheme = html.getAttribute('data-theme');
+          var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-      if (newTheme === 'dark') {
-        html.setAttribute('data-theme', 'dark');
-      } else {
-        html.removeAttribute('data-theme');
+          if (newTheme === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+          } else {
+            html.removeAttribute('data-theme');
+          }
+
+          localStorage.setItem('theme', newTheme);
+        });
       }
-
-      localStorage.setItem('theme', newTheme);
-    });
+    })();
   </script>
 </body>
 </html>

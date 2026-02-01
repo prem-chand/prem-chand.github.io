@@ -117,13 +117,14 @@ nav li a:hover {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.625rem;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
   transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .theme-toggle:hover {
@@ -132,8 +133,8 @@ nav li a:hover {
 }
 
 .theme-toggle svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .theme-toggle .sun-icon {
@@ -446,6 +447,82 @@ tr:nth-child(even) {
   font-size: 1rem;
   margin: 0;
   line-height: 1.6;
+}
+
+/* Publication list styles */
+.publication-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.publication-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.publication-item:first-child {
+  padding-top: 0;
+}
+
+.publication-item:last-child {
+  border-bottom: none;
+}
+
+.publication-year {
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: var(--accent-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  height: fit-content;
+}
+
+.publication-content {
+  flex: 1;
+}
+
+.publication-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.publication-title a {
+  color: var(--text-color);
+}
+
+.publication-title a:hover {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.publication-authors {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0 0 0.25rem 0;
+}
+
+.publication-venue {
+  font-size: 0.875rem;
+  color: var(--light-text);
+  font-style: italic;
+  margin: 0;
+}
+
+.section-more {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.section-more a {
+  color: var(--primary-color);
+  font-weight: 500;
 }
 
 /* About page styles */

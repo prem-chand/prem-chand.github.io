@@ -54,7 +54,7 @@ Three layers operate at different timescales. MPC runs at ≈30–50 Hz and deci
         → moves feet when they are not in contact
 ```
 
-![Image](https://www.researchgate.net/publication/258970686/figure/fig2/AS%3A669529864675336%401536639767626/Quadruped-robot-control-architecture.png)
+![MPC control block diagram](/images/_mpc_block.jpg)
 
 > MPC does **not** output joint torques.
 > It outputs _forces at the feet_.
@@ -76,7 +76,7 @@ RR: 0.0
 
 This schedule is provided to MPC as a known input.
 
-![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-024-84060-5/MediaObjects/41598_2024_84060_Fig6_HTML.png)
+<!-- ![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-024-84060-5/MediaObjects/41598_2024_84060_Fig6_HTML.png) -->
 
 ---
 
@@ -112,14 +112,15 @@ The continuous-time dynamics:
 ṗ = v
 θ̇ ≈ ω
 v̇ = (1/m) Σ F_i + g
-ω̇ = I⁻¹ Σ (r_i × F_i)
+ω̇ = I_w⁻¹ (Σ (r_i × F_i) − ω × (I_w ω))
 ```
 
 Where:
 
 - `F_i` are ground reaction forces
-- `r_i` is vector from CoM to foot contact
-- `I` is the body inertia matrix
+- `r_i` is the vector from CoM to foot contact
+- `I_w = R I_b Rᵀ` is the world-frame inertia tensor (rotated each step from the constant body-frame inertia `I_b`)
+- The `ω × (I_w ω)` term is the gyroscopic correction; it vanishes when linearizing around `ω = 0` and does not appear in the MPC matrices (see Appendix A.3)
 
 This is Newton–Euler mechanics, nothing exotic.
 
@@ -140,8 +141,10 @@ Assumptions:
 After linearization and discretization:
 
 ```
-x_{k+1} = A x_k + B u_k + g
+x_{k+1} = A x_k + B u_k + c
 ```
+
+where `c = Δt g̃` is the gravity feedforward offset (the 12D lifted gravity vector; see Appendix A.5).
 
 This approximation is valid because:
 
@@ -155,7 +158,7 @@ This approximation is valid because:
 The quadratic cost over a horizon `N`:
 
 ```
-J = Σ (x_k − x_ref)ᵀ Q (x_k − x_ref) + u_kᵀ R u_k
+J = (1/2) Σ [ (x_k − x_ref)ᵀ Q (x_k − x_ref) + u_kᵀ R u_k ]
 ```
 
 Interpretation:
@@ -193,7 +196,7 @@ Many unstable controllers fail **not because of bad math**, but because vectors 
 We use three frames:
 
 | Frame | Description            | Why              |
-| ----- | ---------------------- | ---------------- |
+|-------|------------------------|------------------|
 | World | Fixed, gravity aligned | Global reference |
 | Body  | Rotates with robot     | Sensors, inertia |
 | Yaw   | Rotates only about z   | MPC linearity    |
@@ -217,10 +220,13 @@ Given desired GRFs from MPC, we compute joint torques. The implementation here u
 τ = − Jᵀ F_GRF + qfrc_bias
 ```
 
+Here `J` is the **foot Jacobian** ($\partial p_{\text{foot}} / \partial q$), which maps joint velocities to foot-tip velocities. Its transpose therefore maps forces applied _at the foot_ to equivalent joint torques.
+
 Why the minus sign?
 
-- `F_GRF` is force _on the body_
-- Joint torques must apply the opposite force to the ground
+- `F_GRF` is the force the ground exerts _on the body_ (upward)
+- The joint torques must push _against_ the ground (downward reaction), so the sign flips
+- Using a body Jacobian instead would flip the sign a second time — a common source of sign-flip bugs
 
 `qfrc_bias` in MuJoCo contains gravity and Coriolis effects. Adding it gives gravity compensation without explicitly modelling the full dynamics.
 
@@ -243,8 +249,10 @@ Swing legs are **kinematic problems**, not force problems.
 Target foot placement:
 
 ```
-p_target = p_nominal + v·T/2 + K (v − v_cmd)
+p_target = p_nominal + v·T_stance/2 + K (v − v_cmd)
 ```
+
+Where `T_stance` is the **stance duration** (the time the foot is on the ground), not swing time or full gait period. The `v·T_stance/2` term places the foot at the point where the CoM will be at mid-stance, minimising net horizontal impulse. Using the full gait period here over-scales the placement and destabilises the robot at higher speeds.
 
 Key detail:
 
@@ -303,7 +311,6 @@ Logs revealed this faster than intuition.
 - Roll angle reduced by >50%
 - Foot placement converges to targets
 
-![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-023-41462-1/MediaObjects/41598_2023_41462_Fig13_HTML.png)
 
 Showing _before_ matters. Stability is earned.
 
@@ -371,8 +378,8 @@ $$
 
 Where:
 
-- $p \in \mathbb{R}^3$: center of mass position (world frame)
-- $\theta = [\phi,\ \theta,\ \psi]^\top$: roll, pitch, yaw
+- $p \in \mathbb{R}^3$: center of mass position (**world frame**)
+- $\theta = [\phi,\ \vartheta,\ \psi]^\top$: roll ($\phi$), pitch ($\vartheta$), yaw ($\psi$)
 - $v \in \mathbb{R}^3$: linear velocity
 - $\omega \in \mathbb{R}^3$: angular velocity
 
@@ -403,9 +410,7 @@ If a foot is in swing, its corresponding force is constrained to zero.
 
 ### Translational Dynamics
 
-$$\dot{p} = v$$
-
-$$\dot{v} = \frac{1}{m} \sum_{i=1}^{4} F_i + g$$
+$$\begin{aligned} \dot{p} &= v \\ \dot{v} &= \frac{1}{m} \sum_{i=1}^{4} F_i + g \end{aligned}$$
 
 Where $g = [0,\ 0,\ {-9.81}]^\top \in \mathbb{R}^3$ is the gravitational acceleration (see A.5 for how this lifts to the full 12D state).
 
@@ -469,7 +474,7 @@ This reflects:
 - Euler angle rates relate to angular velocity via $R_z(\psi)$ (see below)
 - linear and angular accelerations depend only on forces (two approximations, see below)
 
-**Yaw rotation block.** The exact kinematic relation is $\dot{\theta} = T(\theta)\,\omega$. For small roll $\phi \approx 0$ and pitch $\theta \approx 0$, $T(\theta)$ reduces to $R_z(\psi)$—the $3\times 3$ rotation about the world $z$-axis by the current yaw angle. Using the identity $I$ here instead would cause MPC to predict incorrect orientation trajectories for any heading other than $\psi = 0$.
+**Yaw rotation block.** The exact kinematic relation is $\dot{\theta} = T(\theta)\,\omega$. For small roll $\phi \approx 0$ and pitch $\vartheta \approx 0$, $T(\theta)$ reduces to $R_z(\psi)$—the $3\times 3$ rotation about the world $z$-axis by the current yaw angle. Using the identity $I$ here instead would cause MPC to predict incorrect orientation trajectories for any heading other than $\psi = 0$.
 
 **Lever-arm approximation (Convex MPC).** The true $\frac{\partial\dot{\omega}}{\partial p}$ block is not zero: because $r_i = p_{\text{foot},i} - p_{\text{CoM}}$ depends on $p$, the analytical Jacobian contains a term proportional to $I_w^{-1}\sum F_{i,0}^\times$. Convex MPC (as in the MIT Cheetah 3 formulation) intentionally drops this by evaluating $r_i$ at the reference trajectory rather than the current state. This keeps the prediction model affine in the state and the QP convex. The (0,0) block in the bottom-left $3\times3$ is therefore an approximation, not an exact result.
 
@@ -511,6 +516,8 @@ With:
 
 $$A = I + \Delta t\, A_c, \quad B = \Delta t\, B_c, \quad c = \Delta t\, \tilde{g}$$
 
+Forward Euler is first-order accurate and sufficient at the short timesteps used here ($\Delta t \approx 20$–$33\ \text{ms}$), but it can accumulate drift in the rotational states over long horizons; production implementations such as MIT Cheetah 3 use Zero-Order Hold (ZOH) or the matrix exponential $A = e^{A_c \Delta t}$ for better accuracy at larger timesteps.
+
 ---
 
 ## A.6 MPC Horizon Stacking
@@ -549,10 +556,10 @@ The quadratic objective:
 
 $$
 J =
-\sum_{k=0}^{N-1}
-(x_k - x_k^{\text{ref}})^\top Q\, (x_k - x_k^{\text{ref}})
+\frac{1}{2}\sum_{k=0}^{N-1}
+\Bigl[(x_k - x_k^{\text{ref}})^\top Q\, (x_k - x_k^{\text{ref}})
 +
-u_k^\top R\, u_k
+u_k^\top R\, u_k\Bigr]
 $$
 
 In stacked form:

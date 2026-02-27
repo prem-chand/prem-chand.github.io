@@ -477,6 +477,147 @@ tr:nth-child(even) {
   line-height: 1.6;
 }
 
+/* Post list header with RSS link */
+.list-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.list-header h1 {
+  margin: 0;
+}
+
+.rss-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--light-text);
+  text-decoration: none;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  transition: color var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+
+.rss-link:hover {
+  color: #f97316;
+  border-color: #f97316;
+}
+
+/* Post meta separators and reading time */
+.meta-sep {
+  margin: 0 0.25rem;
+  color: var(--border-color);
+}
+
+.reading-time {
+  color: var(--light-text);
+}
+
+/* Category badge */
+.category-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: var(--accent-color);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  letter-spacing: 0.01em;
+}
+
+/* Tags */
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.post-tags-header {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+}
+
+.tag:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background-color: var(--accent-color);
+}
+
+/* Post footer tags */
+.post-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Related posts */
+.related-posts {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.related-posts h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--light-text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 1rem 0;
+}
+
+.related-posts ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.related-posts li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.related-posts a {
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  flex: 1;
+}
+
+.related-posts a:hover {
+  color: var(--primary-color);
+}
+
+.related-meta {
+  font-size: 0.8rem;
+  color: var(--light-text);
+  white-space: nowrap;
+}
+
 /* Publication list styles */
 .publication-list {
   list-style: none;

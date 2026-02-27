@@ -1,6 +1,19 @@
 ---
 title: "Primal-Dual Predictor-Corrector Interior Point Method for Batched Quadratic Programming"
-date: 2025-03-23
+description: "A comprehensive walkthrough of the Mehrotra Predictor-Corrector IPM for solving batched QP problems, covering KKT conditions, Newton steps, and Schur complement factorization."
+date: 2025-03-23T10:00:00+00:00
+draft: false
+slug: "qp-interior-point"
+categories:
+  - Optimization
+  - Control Systems
+tags:
+  - Quadratic Programming
+  - Interior Point Method
+  - KKT Conditions
+  - Optimization
+  - Numerical Methods
+  - Control Theory
 ---
 
 This document provides a comprehensive explanation of the method, which solves a batch of Quadratic Programming (QP) problems using a Primal-Dual Predictor-Corrector Interior Point Method (IPM).

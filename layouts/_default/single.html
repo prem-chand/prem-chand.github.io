@@ -5,14 +5,44 @@
     {{ if .Date }}
     <p class="post-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      <span class="meta-sep">&middot;</span>
+      <span class="reading-time">{{ .ReadingTime }} min read</span>
       {{ with .Params.categories }}
-      <span> &bull; {{ delimit . ", " }}</span>
+      <span class="meta-sep">&middot;</span>
+      {{ range first 1 . }}<span class="category-badge">{{ . }}</span>{{ end }}
       {{ end }}
     </p>
+    {{ end }}
+    {{ with .Params.tags }}
+    <div class="post-tags post-tags-header">
+      {{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">{{ . }}</a>{{ end }}
+    </div>
     {{ end }}
   </header>
   <div class="content">
     {{ .Content }}
   </div>
+  {{ with .Params.tags }}
+  <footer class="post-footer">
+    <div class="post-tags">
+      {{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">{{ . }}</a>{{ end }}
+    </div>
+  </footer>
+  {{ end }}
 </article>
+
+{{ $related := .Site.RegularPages.Related . | first 3 }}
+{{ with $related }}
+<aside class="related-posts">
+  <h3>Related posts</h3>
+  <ul>
+    {{ range . }}
+    <li>
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <span class="related-meta">{{ .Date.Format "Jan 2006" }}{{ with .Params.categories }} &middot; {{ index . 0 }}{{ end }}</span>
+    </li>
+    {{ end }}
+  </ul>
+</aside>
+{{ end }}
 {{ end }}

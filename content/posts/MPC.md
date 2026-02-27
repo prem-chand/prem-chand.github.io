@@ -306,7 +306,7 @@ Swing legs are **kinematic problems**, not force problems.
 Target foot placement:
 
 ```
-p_target = p_nominal + v·T/2 + K (v_cmd − v)
+p_target = p_nominal + v·T/2 + K (v − v_cmd)
 ```
 
 Key detail:
@@ -482,7 +482,7 @@ $$\dot{p} = v$$
 
 $$\dot{v} = \frac{1}{m} \sum_{i=1}^{4} F_i + g$$
 
-Where $g = [0,\ 0,\ {-9.81}]^\top$.
+Where $g = [0,\ 0,\ {-9.81}]^\top \in \mathbb{R}^3$ is the gravitational acceleration (see A.5 for how this lifts to the full 12D state).
 
 ---
 
@@ -568,9 +568,15 @@ Where $r^\times$ is the skew-symmetric cross-product matrix.
 
 ## A.5 Discretization
 
+Gravity must enter the full 12-dimensional state equation as a lifted vector. Define:
+
+$$\tilde{g} = \begin{bmatrix} 0_{3\times1} \\ 0_{3\times1} \\ g \\ 0_{3\times1} \end{bmatrix} \in \mathbb{R}^{12}$$
+
+where $g = [0,\ 0,\ {-9.81}]^\top$ is the 3D gravitational acceleration. Only the linear velocity block is driven by gravity; the position, orientation, and angular velocity blocks are zero.
+
 Using forward Euler with timestep $\Delta t$:
 
-$$x_{k+1} = x_k + \Delta t \,(A_c x_k + B_c u_k + g)$$
+$$x_{k+1} = x_k + \Delta t \,(A_c x_k + B_c u_k + \tilde{g})$$
 
 Which yields:
 
@@ -578,7 +584,7 @@ $$x_{k+1} = A\, x_k + B\, u_k + c$$
 
 With:
 
-$$A = I + \Delta t\, A_c, \quad B = \Delta t\, B_c, \quad c = \Delta t\, g$$
+$$A = I + \Delta t\, A_c, \quad B = \Delta t\, B_c, \quad c = \Delta t\, \tilde{g}$$
 
 ---
 

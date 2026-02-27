@@ -78,7 +78,7 @@ Before diving into math, it helps to see the full control stack.
         Model Predictive Control (≈ 30–50 Hz)
         → decides desired ground reaction forces
 
-        Whole Body Control (≈ 100–200 Hz)
+        Torque Computation / WBC (≈ 500 Hz–1 kHz)
         → converts forces into joint torques
 
         Swing Leg Control (≈ 1 kHz)
@@ -88,7 +88,7 @@ Before diving into math, it helps to see the full control stack.
 Why three layers?
 
 - **MPC** reasons about the _future_ but is computationally expensive
-- **WBC** enforces instantaneous physical consistency
+- **Torque computation** enforces instantaneous physical consistency
 - **Swing control** must react quickly to maintain foot tracking
 
 Each layer solves a simpler problem than the one above it.
@@ -272,14 +272,12 @@ This preserves physical meaning while keeping the math tame.
 
 ---
 
-## 6. Whole Body Control (WBC)
+## 6. Torque Computation (Jacobian Transpose Control)
 
-Given desired GRFs from MPC, we compute joint torques.
+Given desired GRFs from MPC, we compute joint torques. The implementation here uses **Jacobian Transpose Control**:
 
-For a stance leg:
-
-```
-τ = − Jᵀ F_GRF
+```text
+τ = − Jᵀ F_GRF + qfrc_bias
 ```
 
 Why the minus sign?
@@ -287,14 +285,15 @@ Why the minus sign?
 - `F_GRF` is force _on the body_
 - Joint torques must apply the opposite force to the ground
 
-In MuJoCo, gravity and Coriolis effects appear in `qfrc_bias`.
-We add this term explicitly for gravity compensation.
+`qfrc_bias` in MuJoCo contains gravity and Coriolis effects. Adding it gives gravity compensation without explicitly modelling the full dynamics.
 
-WBC is instantaneous:
+This layer is instantaneous:
 
 - No prediction
 - No horizon
 - Just enforce physics _right now_
+
+> **JT Control vs true WBC:** What is implemented here is Jacobian Transpose Control—sufficient for the centroidal abstraction used by this MPC. True _Whole Body Control_ solves a secondary QP using the full rigid body dynamics $M(q)\ddot{q} + C + G = S^\top\tau + J^\top F$ to produce dynamically consistent joint accelerations and contact forces simultaneously. Full WBC is more accurate but considerably more expensive to implement. JT Control runs at 500 Hz–1 kHz; full WBC implementations typically target the same rate but with much heavier per-cycle computation.
 
 ---
 
@@ -489,13 +488,19 @@ Where $g = [0,\ 0,\ {-9.81}]^\top$.
 
 ### Rotational Dynamics
 
-$$\dot{\theta} \approx \omega$$
+$$\dot{\theta} = T(\theta)\,\omega$$
 
-This approximation is valid for small roll and pitch angles.
+where $T(\theta)$ is the Euler-angle-to-angular-velocity mapping. For small roll and pitch this simplifies (see A.4).
 
-$$\dot{\omega} = I^{-1} \sum_{i=1}^{4} (r_i \times F_i)$$
+The complete Newton-Euler rotational equation, including the gyroscopic term, is:
 
-Where $r_i = p_{\text{foot},i} - p_{\text{CoM}}$.
+$$\dot{\omega} = I_w^{-1} \left(\sum_{i=1}^{4} (r_i \times F_i) - \omega \times (I_w\,\omega)\right)$$
+
+Where:
+
+- $r_i = p_{\text{foot},i} - p_{\text{CoM}}$
+- $I_w = R\,I_b\,R^\top$ is the **world-frame inertia tensor**, constructed at each MPC step from the body-frame inertia $I_b$ (constant) and the current rotation matrix $R$. The body inertia $I_b$ is constant; $I_w$ is not.
+- The gyroscopic term $\omega \times (I_w\,\omega)$ is nonlinear and vanishes when linearizing around $\omega_0 = 0$; it does not appear in $A_c$.
 
 ---
 
@@ -527,7 +532,7 @@ $$
 A_c =
 \begin{bmatrix}
 0 & 0 & I & 0 \\
-0 & 0 & 0 & I \\
+0 & 0 & 0 & R_z(\psi) \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0
 \end{bmatrix}
@@ -536,8 +541,12 @@ $$
 This reflects:
 
 - position integrates velocity
-- orientation integrates angular velocity
-- accelerations depend only on forces
+- Euler angle rates relate to angular velocity via $R_z(\psi)$ (see below)
+- linear and angular accelerations depend only on forces (two approximations, see below)
+
+**Yaw rotation block.** The exact kinematic relation is $\dot{\theta} = T(\theta)\,\omega$. For small roll $\phi \approx 0$ and pitch $\theta \approx 0$, $T(\theta)$ reduces to $R_z(\psi)$—the $3\times 3$ rotation about the world $z$-axis by the current yaw angle. Using the identity $I$ here instead would cause MPC to predict incorrect orientation trajectories for any heading other than $\psi = 0$.
+
+**Lever-arm approximation (Convex MPC).** The true $\frac{\partial\dot{\omega}}{\partial p}$ block is not zero: because $r_i = p_{\text{foot},i} - p_{\text{CoM}}$ depends on $p$, the analytical Jacobian contains a term proportional to $I_w^{-1}\sum F_{i,0}^\times$. Convex MPC (as in the MIT Cheetah 3 formulation) intentionally drops this by evaluating $r_i$ at the reference trajectory rather than the current state. This keeps the prediction model affine in the state and the QP convex. The (0,0) block in the bottom-left $3\times3$ is therefore an approximation, not an exact result.
 
 ---
 

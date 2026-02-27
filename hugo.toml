@@ -30,6 +30,10 @@ location = "Bengaluru, India"
     style = "monokai"
     lineNos = false
     noClasses = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
 
 [taxonomies]
   tag = "tags"

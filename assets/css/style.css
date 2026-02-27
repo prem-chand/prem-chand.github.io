@@ -635,6 +635,7 @@ tr:nth-child(even) {
   letter-spacing: 0.08em;
   color: var(--light-text);
   margin: 0 0 0.75rem 0;
+  text-align: left;
 }
 
 .toc ul,

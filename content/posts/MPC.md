@@ -558,7 +558,7 @@ B_c =
 0 \\
 0 \\
 \frac{1}{m}[\,I_3 \mid I_3 \mid I_3 \mid I_3\,] \\
-I^{-1}[\,r_1^\times \mid r_2^\times \mid r_3^\times \mid r_4^\times\,]
+I_w^{-1}[\,r_1^\times \mid r_2^\times \mid r_3^\times \mid r_4^\times\,]
 \end{bmatrix}
 $$
 
@@ -632,7 +632,9 @@ Where:
 
 $$H = \mathcal{B}^\top \bar{Q}\, \mathcal{B} + \bar{R}$$
 
-$$f = \mathcal{B}^\top \bar{Q}\, (\mathcal{A}\, x_0 - X_{\text{ref}})$$
+$$f = \mathcal{B}^\top \bar{Q}\, (\mathcal{A}\, x_0 + \mathcal{C} - X_{\text{ref}})$$
+
+The $\mathcal{C}$ term accounts for the accumulated effect of gravity over the horizon. Omitting it removes the gravity feedforward from the QP and forces the solver to rely entirely on feedback weights to keep the robot standing.
 
 This is a **convex quadratic program**.
 
@@ -659,6 +661,8 @@ $$|F_y| \le \mu F_z$$
 $$F_z \ge 0$$
 
 These constraints are linear and compatible with QP solvers.
+
+> **Flat-ground assumption.** These inequalities are written in the world frame and assume the contact normal is aligned with world $\hat{z}$. This is valid on flat, level terrain. On inclined or rough surfaces, $F_i$ must be transformed to the local contact frame via the surface normal rotation before applying friction limits; otherwise the constraints either over-restrict valid forces or permit slip.
 
 ---
 

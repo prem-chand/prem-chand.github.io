@@ -20,10 +20,10 @@
     {{ end }}
   </header>
   {{ if .Params.toc }}
-  <nav class="toc">
+  <aside class="toc">
     <p class="toc-title">Contents</p>
     {{ .TableOfContents }}
-  </nav>
+  </aside>
   {{ end }}
   <div class="content">
     {{ .Content }}

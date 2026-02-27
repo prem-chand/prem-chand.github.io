@@ -18,7 +18,7 @@ tags:
   - MuJoCo
 ---
 
-## _A practical, end-to-end guide for beginners_
+Quadruped locomotion looks effortless in animals. In robots, the control problem is one of **negotiating with physics**: the center of mass cannot be commanded directly—it can only be influenced through ground reaction forces at the feet, which can only push, never pull. This is a practical guide to how that problem is solved.
 
 ## Prerequisites
 
@@ -39,40 +39,9 @@ No prior experience with MPC or legged robots is assumed.
 
 ---
 
-## 1. Motivation: Why Is Quadruped Locomotion Hard?
-
-Quadruped locomotion looks effortless in animals. In robots, it is anything but.
-
-A quadruped robot typically has:
-
-- **12 actuated joints**
-- A **6-DoF floating base** (position + orientation, not directly actuated)
-- **Intermittent contact** with the ground
-
-This means the robot is **underactuated**.
-You cannot command the center of mass (CoM) directly. You can only influence it indirectly through **ground reaction forces (GRFs)** at the feet.
-
-At any instant:
-
-- Some legs are in contact, others are not
-- Each contact can only push, not pull
-- Friction limits what forces are physically possible
-
-The control problem becomes one of **negotiating with physics**, not issuing commands.
-
-![Image](https://www.researchgate.net/publication/241151813/figure/fig5/AS%3A669133691707403%401536545312490/GROUND-REACTION-FORCES-FOR-EACH-LEG-OF-THE-ROBOT-AND-THE-MODEL.png)
-
-![Image](https://www.researchgate.net/publication/350790598/figure/fig1/AS%3A1035561045327873%401623908401256/Illustration-of-the-centroidal-dynamics-and-its-connection-to-the-whole-body-dynamics.png)
-
-Every controller in this stack exists to answer one question:
-
-> _Given these contacts, what forces should the robot apply to stay balanced and move where we want?_
-
----
-
 ## 2. Control Hierarchy Overview
 
-Before diving into math, it helps to see the full control stack.
+Three layers operate at different timescales. MPC runs at ≈30–50 Hz and decides ground reaction forces; torque computation runs at 500 Hz–1 kHz and converts those forces to joint torques; swing leg control runs at ≈1 kHz and moves feet during flight phases.
 
 ```
         Model Predictive Control (≈ 30–50 Hz)
@@ -85,17 +54,7 @@ Before diving into math, it helps to see the full control stack.
         → moves feet when they are not in contact
 ```
 
-Why three layers?
-
-- **MPC** reasons about the _future_ but is computationally expensive
-- **Torque computation** enforces instantaneous physical consistency
-- **Swing control** must react quickly to maintain foot tracking
-
-Each layer solves a simpler problem than the one above it.
-
 ![Image](https://www.researchgate.net/publication/258970686/figure/fig2/AS%3A669529864675336%401536639767626/Quadruped-robot-control-architecture.png)
-
-A key idea to keep in mind:
 
 > MPC does **not** output joint torques.
 > It outputs _forces at the feet_.
@@ -104,14 +63,9 @@ A key idea to keep in mind:
 
 ## 3. Gait Scheduling
 
-A gait defines **when each foot is allowed to touch the ground**.
+From MPC's perspective there are no "legs"—only **force variables that are enabled or disabled** by a binary contact schedule $c_i(k) \in \{0,1\}$. A gait defines that schedule.
 
-For a trot:
-
-- Front-left and rear-right move together
-- Front-right and rear-left move together
-
-We represent this using **phase offsets**:
+For a trot, alternating diagonal pairs share the same phase:
 
 ```
 FL: 0.0
@@ -120,18 +74,7 @@ RL: 0.5
 RR: 0.0
 ```
 
-From these phases we generate a **binary contact schedule**:
-
-```
-c_i(k) ∈ {0, 1}
-```
-
 This schedule is provided to MPC as a known input.
-
-From MPC's perspective:
-
-- There are no "legs"
-- Only **force variables that are enabled or disabled**
 
 ![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-024-84060-5/MediaObjects/41598_2024_84060_Fig6_HTML.png)
 
@@ -255,12 +198,6 @@ We use three frames:
 | Body  | Rotates with robot     | Sensors, inertia |
 | Yaw   | Rotates only about z   | MPC linearity    |
 
-Why the yaw frame?
-
-- Full body frame rotates too aggressively for linear MPC
-- World frame ignores robot heading
-- Yaw frame is the compromise
-
 ![Image](https://dev.bostondynamics.com/_images/spotframes.png)
 
 A common trick:
@@ -343,19 +280,7 @@ Swing targets are frozen at swing onset to prevent mid-air oscillations.
 
 ## 8. Tuning Lessons (What the Papers Don't Tell You)
 
-This section matters.
-
-### Q vs R Balance
-
-- Large `Q/R`: aggressive correction, force chatter
-- Small `Q/R`: smooth but unresponsive
-
-### Force Smoothing
-
-Exponential moving average reduces chatter:
-
-- More smoothing → lag
-- Less smoothing → noise
+The Q/R ratio is the primary lever: large `Q/R` gives aggressive correction but force chatter; small `Q/R` gives smooth but unresponsive behavior. An exponential moving average on the output forces reduces chatter at the cost of lag—tune both together.
 
 ### Foot Placement Bug
 
@@ -689,12 +614,3 @@ Solved at every control cycle.
 
 Only the **first control input** $u_0^*$ is applied.
 The horizon is shifted and the problem re-solved at the next timestep.
-
----
-
-## A.10 Key Takeaways
-
-- MPC operates on **forces**, not torques
-- Linearization is acceptable because of frequent re-solving
-- Physical constraints are what make the solution meaningful
-- Most implementation bugs arise from **frame mismatches**, not math

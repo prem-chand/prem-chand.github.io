@@ -4,6 +4,7 @@ description: "A practical, end-to-end guide to MPC for legged robots—covering 
 date: 2025-06-01T10:00:00+00:00
 draft: false
 slug: "mpc-quadruped"
+toc: true
 categories:
   - Robotics
   - Control Systems
@@ -30,6 +31,12 @@ This post assumes familiarity with:
 
 No prior experience with MPC or legged robots is assumed.
 
+<div class="github-callout">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+  <span>Full Python implementation with MuJoCo:</span>
+  <a href="https://github.com/prem-chand/QuadrupedMPC" target="_blank" rel="noopener">prem-chand/QuadrupedMPC</a>
+</div>
+
 ---
 
 ## 1. Motivation: Why Is Quadruped Locomotion Hard?
@@ -54,8 +61,6 @@ At any instant:
 The control problem becomes one of **negotiating with physics**, not issuing commands.
 
 ![Image](https://www.researchgate.net/publication/241151813/figure/fig5/AS%3A669133691707403%401536545312490/GROUND-REACTION-FORCES-FOR-EACH-LEG-OF-THE-ROBOT-AND-THE-MODEL.png)
-
-![Image](https://www.researchgate.net/publication/263277248/figure/fig1/AS%3A614048953540620%401523412087965/Schematic-representation-of-quadruped-robot-with-compliant-legs.png)
 
 ![Image](https://www.researchgate.net/publication/350790598/figure/fig1/AS%3A1035561045327873%401623908401256/Illustration-of-the-centroidal-dynamics-and-its-connection-to-the-whole-body-dynamics.png)
 
@@ -90,8 +95,6 @@ Each layer solves a simpler problem than the one above it.
 
 ![Image](https://www.researchgate.net/publication/258970686/figure/fig2/AS%3A669529864675336%401536639767626/Quadruped-robot-control-architecture.png)
 
-![Image](https://moonlight-paper-snapshot.s3.ap-northeast-2.amazonaws.com/arxiv/hierarchical-learning-framework-for-whole-body-model-predictive-control-of-a-real-humanoid-robot-2.png)
-
 A key idea to keep in mind:
 
 > MPC does **not** output joint torques.
@@ -125,14 +128,12 @@ c_i(k) ∈ {0, 1}
 
 This schedule is provided to MPC as a known input.
 
-From MPC’s perspective:
+From MPC's perspective:
 
-- There are no “legs”
+- There are no "legs"
 - Only **force variables that are enabled or disabled**
 
 ![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-024-84060-5/MediaObjects/41598_2024_84060_Fig6_HTML.png)
-
-![Image](https://www.researchgate.net/publication/346211363/figure/fig4/AS%3A11431281401767575%401745601475531/The-left-side-of-the-image-shows-the-schedule-of-a-trot-gait-while-the-right-side-shows.tif)
 
 ---
 
@@ -140,7 +141,7 @@ From MPC’s perspective:
 
 ### 4.1 State Vector
 
-We use a **centroidal model**, focusing on the robot’s mass distribution rather than individual joints.
+We use a **centroidal model**, focusing on the robot's mass distribution rather than individual joints.
 
 State vector (12-dimensional):
 
@@ -165,7 +166,7 @@ MPC does not care _how_ joints move—only how forces move the body.
 The continuous-time dynamics:
 
 ```
-ṗ = v
+ṗ = v
 θ̇ ≈ ω
 v̇ = (1/m) Σ F_i + g
 ω̇ = I⁻¹ Σ (r_i × F_i)
@@ -178,8 +179,6 @@ Where:
 - `I` is the body inertia matrix
 
 This is Newton–Euler mechanics, nothing exotic.
-
-![Image](https://www.researchgate.net/publication/350790598/figure/fig1/AS%3A1035561045327873%401623908401256/Illustration-of-the-centroidal-dynamics-and-its-connection-to-the-whole-body-dynamics.png)
 
 ![Image](https://www.researchgate.net/publication/371684817/figure/fig3/AS%3A11431281168765950%401687144641740/The-centroidal-dynamics-model-assumes-that-the-robot-is-a-single-rigid-body-with-massless.png)
 
@@ -221,8 +220,7 @@ Interpretation:
 - `Q`: how much we care about tracking motion
 - `R`: how much we penalize large forces
 
-Too much `Q` → force chatter
-Too much `R` → sluggish response
+Too much `Q` → force chatter. Too much `R` → sluggish response.
 
 ---
 
@@ -263,8 +261,6 @@ Why the yaw frame?
 - World frame ignores robot heading
 - Yaw frame is the compromise
 
-![Image](https://www.researchgate.net/publication/221786604/figure/fig1/AS%3A305482783838208%401449844179148/Coordinate-frames-for-the-robot-The-head-has-two-DOFs-such-as-yawing-and-pitching-The.png)
-
 ![Image](https://dev.bostondynamics.com/_images/spotframes.png)
 
 A common trick:
@@ -300,10 +296,6 @@ WBC is instantaneous:
 - No horizon
 - Just enforce physics _right now_
 
-![Image](https://i.sstatic.net/b8Wdg.png)
-
-![Image](https://www.researchgate.net/publication/339177612/figure/fig4/AS%3A857800704024579%401581527033952/Simulink-model-of-Jacobian-transpose-control.ppm)
-
 ---
 
 ## 7. Swing Leg Control
@@ -336,8 +328,6 @@ We generate a smooth swing trajectory using a **cubic Bézier curve**:
 
 ![Image](https://www.researchgate.net/publication/381417059/figure/fig1/AS%3A11431281390879366%401745300148350/Bezier-curve-green-to-implement-the-support-and-swing-phases-during-the-step-of-a-leg.tif)
 
-![Image](https://cdn.hackaday.io/images/3445591592702432996.png)
-
 ---
 
 ### 7.3 Cartesian PD
@@ -352,7 +342,7 @@ Swing targets are frozen at swing onset to prevent mid-air oscillations.
 
 ---
 
-## 8. Tuning Lessons (What the Papers Don’t Tell You)
+## 8. Tuning Lessons (What the Papers Don't Tell You)
 
 This section matters.
 
@@ -370,22 +360,13 @@ Exponential moving average reduces chatter:
 
 ### Foot Placement Bug
 
-Symptom:
+Symptom: legs drift inward; robot collapses laterally.
 
-- Legs drift inward
-- Robot collapses laterally
+Signal: asymmetric lateral GRFs.
 
-Signal:
+Root cause: foot targets anchored to hip frame.
 
-- Asymmetric lateral GRFs
-
-Root cause:
-
-- Foot targets anchored to hip frame
-
-Fix:
-
-- Anchor to nominal stance frame
+Fix: anchor to nominal stance frame.
 
 Logs revealed this faster than intuition.
 
@@ -398,15 +379,13 @@ Logs revealed this faster than intuition.
 - Roll angle reduced by >50%
 - Foot placement converges to targets
 
-![Image](https://www.researchgate.net/publication/284907108/figure/fig5/AS%3A877552176484352%401586236151606/Webots-simulation-Snapshots-of-one-gait-cycle-of-the-Cheetahcub-robot-in-trot-gait.jpg)
-
 ![Image](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-023-41462-1/MediaObjects/41598_2023_41462_Fig13_HTML.png)
 
 Showing _before_ matters. Stability is earned.
 
 ---
 
-## 10. What’s Next
+## 10. What's Next
 
 Possible extensions:
 
@@ -428,14 +407,7 @@ If this post saves you a week of debugging lateral collapse, it has done its job
 
 ---
 
-Below is a **self-contained Appendix** you can paste verbatim at the end of the blog.
-It is deliberately more formal than the main text, but still readable for a beginner who is willing to slow down.
-
-No storytelling here—this is the machinery laid bare.
-
----
-
-# Appendix A: Model Predictive Control Mathematics
+## Appendix A: MPC Mathematics
 
 This appendix derives the MPC formulation used in the main article.
 All assumptions are stated explicitly.
@@ -446,7 +418,7 @@ All assumptions are stated explicitly.
 
 We use a **centroidal rigid body model** with the following assumptions:
 
-1. The robot is treated as a single rigid body with mass `m` and inertia `I`
+1. The robot is treated as a single rigid body with mass $m$ and inertia $I$
 2. Contacts occur at known foot locations
 3. Roll and pitch angles are small
 4. Contacts are known a priori from the gait scheduler
@@ -462,23 +434,23 @@ This model ignores joint dynamics entirely. That abstraction is intentional.
 
 The state is 12-dimensional:
 
-[
+$$
 x =
 \begin{bmatrix}
-p \
-\theta \
-v \
+p \\
+\theta \\
+v \\
 \omega
 \end{bmatrix}
 \in \mathbb{R}^{12}
-]
+$$
 
 Where:
 
-- ( p \in \mathbb{R}^3 ): center of mass position (world frame)
-- ( \theta = [\phi, \theta, \psi]^\top ): roll, pitch, yaw
-- ( v \in \mathbb{R}^3 ): linear velocity
-- ( \omega \in \mathbb{R}^3 ): angular velocity
+- $p \in \mathbb{R}^3$: center of mass position (world frame)
+- $\theta = [\phi,\ \theta,\ \psi]^\top$: roll, pitch, yaw
+- $v \in \mathbb{R}^3$: linear velocity
+- $\omega \in \mathbb{R}^3$: angular velocity
 
 ---
 
@@ -486,18 +458,18 @@ Where:
 
 The control input is the concatenation of **ground reaction forces** at all feet:
 
-[
+$$
 u =
 \begin{bmatrix}
-F_1 \
-F_2 \
-F_3 \
+F_1 \\
+F_2 \\
+F_3 \\
 F_4
 \end{bmatrix}
 \in \mathbb{R}^{12}
-]
+$$
 
-Each ( F_i \in \mathbb{R}^3 ) is expressed in the **world frame**.
+Each $F_i \in \mathbb{R}^3$ is expressed in the **world frame**.
 
 If a foot is in swing, its corresponding force is constrained to zero.
 
@@ -507,73 +479,59 @@ If a foot is in swing, its corresponding force is constrained to zero.
 
 ### Translational Dynamics
 
-[
-\dot{p} = v
-]
+$$\dot{p} = v$$
 
-[
-\dot{v} = \frac{1}{m} \sum_{i=1}^4 F_i + g
-]
+$$\dot{v} = \frac{1}{m} \sum_{i=1}^{4} F_i + g$$
 
-Where ( g = [0, 0, -9.81]^\top ).
+Where $g = [0,\ 0,\ {-9.81}]^\top$.
 
 ---
 
 ### Rotational Dynamics
 
-[
-\dot{\theta} \approx \omega
-]
+$$\dot{\theta} \approx \omega$$
 
 This approximation is valid for small roll and pitch angles.
 
-[
-\dot{\omega} = I^{-1} \sum_{i=1}^4 (r_i \times F_i)
-]
+$$\dot{\omega} = I^{-1} \sum_{i=1}^{4} (r_i \times F_i)$$
 
-Where:
-
-- ( r*i = p*{foot,i} - p\_{CoM} )
+Where $r_i = p_{\text{foot},i} - p_{\text{CoM}}$.
 
 ---
 
 ## A.4 Linearization
 
-We linearize about the current state ( x_0 ) and nominal input ( u_0 ).
+We linearize about the current state $x_0$ and nominal input $u_0$.
 
 The dynamics can be written compactly as:
 
-[
-\dot{x} = f(x, u)
-]
+$$\dot{x} = f(x, u)$$
 
 First-order Taylor expansion:
 
-[
-\dot{x} \approx A_c (x - x_0) + B_c (u - u_0) + f(x_0, u_0)
-]
+$$\dot{x} \approx A_c (x - x_0) + B_c (u - u_0) + f(x_0, u_0)$$
 
 Where:
 
-[
-A_c = \left.\frac{\partial f}{\partial x}\right|*{x_0,u_0},
+$$
+A_c = \left.\frac{\partial f}{\partial x}\right|_{x_0,u_0},
 \quad
-B_c = \left.\frac{\partial f}{\partial u}\right|*{x_0,u_0}
-]
+B_c = \left.\frac{\partial f}{\partial u}\right|_{x_0,u_0}
+$$
 
 ---
 
-### Structure of ( A_c )
+### Structure of $A_c$
 
-[
+$$
 A_c =
 \begin{bmatrix}
-0 & 0 & I & 0 \
-0 & 0 & 0 & I \
-0 & 0 & 0 & 0 \
+0 & 0 & I & 0 \\
+0 & 0 & 0 & I \\
+0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0
 \end{bmatrix}
-]
+$$
 
 This reflects:
 
@@ -583,77 +541,65 @@ This reflects:
 
 ---
 
-### Structure of ( B_c )
+### Structure of $B_c$
 
-[
+$$
 B_c =
 \begin{bmatrix}
-0 \
-0 \
-\frac{1}{m} [I ; I ; I ; I] \
-I^{-1} [r_1^\times ; r_2^\times ; r_3^\times ; r_4^\times]
+0 \\
+0 \\
+\frac{1}{m}[\,I_3 \mid I_3 \mid I_3 \mid I_3\,] \\
+I^{-1}[\,r_1^\times \mid r_2^\times \mid r_3^\times \mid r_4^\times\,]
 \end{bmatrix}
-]
+$$
 
-Where ( r^\times ) is the skew-symmetric cross-product matrix.
+Where $r^\times$ is the skew-symmetric cross-product matrix.
 
 ---
 
 ## A.5 Discretization
 
-Using forward Euler with timestep ( \Delta t ):
+Using forward Euler with timestep $\Delta t$:
 
-[
-x_{k+1} = x_k + \Delta t (A_c x_k + B_c u_k + g)
-]
+$$x_{k+1} = x_k + \Delta t \,(A_c x_k + B_c u_k + g)$$
 
 Which yields:
 
-[
-x_{k+1} = A x_k + B u_k + c
-]
+$$x_{k+1} = A\, x_k + B\, u_k + c$$
 
 With:
 
-[
-A = I + \Delta t A_c
-\quad
-B = \Delta t B_c
-\quad
-c = \Delta t g
-]
+$$A = I + \Delta t\, A_c, \quad B = \Delta t\, B_c, \quad c = \Delta t\, g$$
 
 ---
 
 ## A.6 MPC Horizon Stacking
 
-Over a horizon of length ( N ):
+Over a horizon of length $N$:
 
-[
+$$
 X =
 \begin{bmatrix}
-x_1 \
-x_2 \
-\vdots \
+x_1 \\
+x_2 \\
+\vdots \\
 x_N
 \end{bmatrix},
 \quad
 U =
 \begin{bmatrix}
-u_0 \
-u_1 \
-\vdots \
+u_0 \\
+u_1 \\
+\vdots \\
 u_{N-1}
 \end{bmatrix}
-]
+$$
 
 The stacked dynamics become:
 
-[
-X = \mathcal{A} x_0 + \mathcal{B} U + \mathcal{C}
-]
+$$X = \mathcal{A}\, x_0 + \mathcal{B}\, U + \mathcal{C}$$
 
-Where ( \mathcal{A} ), ( \mathcal{B} ) are block matrices constructed from ( A ) and ( B ).
+Where $\mathcal{A}$, $\mathcal{B}$ are block matrices constructed from $A$ and $B$.
 
 ---
 
@@ -661,30 +607,23 @@ Where ( \mathcal{A} ), ( \mathcal{B} ) are block matrices constructed from ( A )
 
 The quadratic objective:
 
-[
+$$
 J =
 \sum_{k=0}^{N-1}
-(x_k - x_k^{ref})^\top Q (x_k - x_k^{ref})
+(x_k - x_k^{\text{ref}})^\top Q\, (x_k - x_k^{\text{ref}})
 +
-u_k^\top R u_k
-]
+u_k^\top R\, u_k
+$$
 
 In stacked form:
 
-[
-J =
-\frac{1}{2} U^\top H U + f^\top U
-]
+$$J = \frac{1}{2} U^\top H U + f^\top U$$
 
 Where:
 
-[
-H = \mathcal{B}^\top \bar{Q} \mathcal{B} + \bar{R}
-]
+$$H = \mathcal{B}^\top \bar{Q}\, \mathcal{B} + \bar{R}$$
 
-[
-f = \mathcal{B}^\top \bar{Q} (\mathcal{A} x_0 - X_{ref})
-]
+$$f = \mathcal{B}^\top \bar{Q}\, (\mathcal{A}\, x_0 - X_{\text{ref}})$$
 
 This is a **convex quadratic program**.
 
@@ -694,11 +633,9 @@ This is a **convex quadratic program**.
 
 ### Contact Constraints
 
-For each foot ( i ):
+For each foot $i$:
 
-[
-F_i = 0 \quad \text{if foot } i \text{ is in swing}
-]
+$$F_i = 0 \quad \text{if foot } i \text{ is in swing}$$
 
 ---
 
@@ -706,17 +643,11 @@ F_i = 0 \quad \text{if foot } i \text{ is in swing}
 
 For stance feet:
 
-[
-|F_x| \le \mu F_z
-]
+$$|F_x| \le \mu F_z$$
 
-[
-|F_y| \le \mu F_z
-]
+$$|F_y| \le \mu F_z$$
 
-[
-F_z \ge 0
-]
+$$F_z \ge 0$$
 
 These constraints are linear and compatible with QP solvers.
 
@@ -726,18 +657,18 @@ These constraints are linear and compatible with QP solvers.
 
 The complete optimization:
 
-[
+$$
 \begin{aligned}
-\min_U \quad & \frac{1}{2} U^\top H U + f^\top U \
+\min_U \quad & \frac{1}{2} U^\top H U + f^\top U \\
 \text{s.t.} \quad
-& G U \le h \
-& A_{eq} U = b_{eq}
+& G U \le h \\
+& A_{\text{eq}}\, U = b_{\text{eq}}
 \end{aligned}
-]
+$$
 
 Solved at every control cycle.
 
-Only the **first control input** ( u_0^\* ) is applied.
+Only the **first control input** $u_0^*$ is applied.
 The horizon is shifted and the problem re-solved at the next timestep.
 
 ---
@@ -748,8 +679,3 @@ The horizon is shifted and the problem re-solved at the next timestep.
 - Linearization is acceptable because of frequent re-solving
 - Physical constraints are what make the solution meaningful
 - Most implementation bugs arise from **frame mismatches**, not math
-
----
-
-This appendix intentionally trades brevity for clarity.
-If the main article explains _why_ MPC works, this appendix shows _how_ the machinery actually runs.

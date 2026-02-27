@@ -19,6 +19,12 @@
     </div>
     {{ end }}
   </header>
+  {{ if .Params.toc }}
+  <nav class="toc">
+    <p class="toc-title">Contents</p>
+    {{ .TableOfContents }}
+  </nav>
+  {{ end }}
   <div class="content">
     {{ .Content }}
   </div>

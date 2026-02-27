@@ -618,6 +618,89 @@ tr:nth-child(even) {
   white-space: nowrap;
 }
 
+/* Table of Contents */
+.toc {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+  font-size: 0.9rem;
+}
+
+.toc-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--light-text);
+  margin: 0 0 0.75rem 0;
+}
+
+.toc ul,
+#TableOfContents ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.toc ul ul,
+#TableOfContents ul ul {
+  padding-left: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.toc li,
+#TableOfContents li {
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.toc a,
+#TableOfContents a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.toc a:hover,
+#TableOfContents a:hover {
+  color: var(--primary-color);
+}
+
+/* GitHub callout */
+.github-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.github-callout svg {
+  flex-shrink: 0;
+  color: var(--text-color);
+}
+
+.github-callout span {
+  color: var(--text-secondary);
+}
+
+.github-callout a {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.github-callout a:hover {
+  text-decoration: underline;
+}
+
 /* Publication list styles */
 .publication-list {
   list-style: none;

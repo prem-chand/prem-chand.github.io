@@ -39,7 +39,7 @@ No prior experience with MPC or legged robots is assumed.
 
 ---
 
-## 2. Control Hierarchy Overview
+## 1. Control Hierarchy Overview
 
 Three layers operate at different timescales. MPC runs at ≈30–50 Hz and decides ground reaction forces; torque computation runs at 500 Hz–1 kHz and converts those forces to joint torques; swing leg control runs at ≈1 kHz and moves feet during flight phases.
 
@@ -61,7 +61,7 @@ Three layers operate at different timescales. MPC runs at ≈30–50 Hz and deci
 
 ---
 
-## 3. Gait Scheduling
+## 2. Gait Scheduling
 
 From MPC's perspective there are no "legs"—only **force variables that are enabled or disabled** by a binary contact schedule $c_i(k) \in \{0,1\}$. A gait defines that schedule.
 
@@ -80,9 +80,9 @@ This schedule is provided to MPC as a known input.
 
 ---
 
-## 4. MPC Formulation
+## 3. MPC Formulation
 
-### 4.1 State Vector
+### 3.1 State Vector
 
 We use a **centroidal model**, focusing on the robot's mass distribution rather than individual joints.
 
@@ -104,7 +104,7 @@ MPC does not care _how_ joints move—only how forces move the body.
 
 ---
 
-### 4.2 Centroidal Dynamics
+### 3.2 Centroidal Dynamics
 
 The continuous-time dynamics:
 
@@ -127,7 +127,7 @@ This is Newton–Euler mechanics, nothing exotic.
 
 ---
 
-### 4.3 Linearization
+### 3.3 Linearization
 
 The true dynamics are nonlinear. MPC handles this by **linearizing around the current state**.
 
@@ -150,7 +150,7 @@ This approximation is valid because:
 
 ---
 
-### 4.4 Cost Function
+### 3.4 Cost Function
 
 The quadratic cost over a horizon `N`:
 
@@ -167,7 +167,7 @@ Too much `Q` → force chatter. Too much `R` → sluggish response.
 
 ---
 
-### 4.5 Constraints
+### 3.5 Constraints
 
 Physical constraints make this problem meaningful:
 
@@ -186,7 +186,7 @@ The MPC output is:
 
 ---
 
-## 5. Coordinate Frames (Crucial and Often Skipped)
+## 4. Coordinate Frames (Crucial and Often Skipped)
 
 Many unstable controllers fail **not because of bad math**, but because vectors live in the wrong frame.
 
@@ -209,7 +209,7 @@ This preserves physical meaning while keeping the math tame.
 
 ---
 
-## 6. Torque Computation (Jacobian Transpose Control)
+## 5. Torque Computation (Jacobian Transpose Control)
 
 Given desired GRFs from MPC, we compute joint torques. The implementation here uses **Jacobian Transpose Control**:
 
@@ -234,11 +234,11 @@ This layer is instantaneous:
 
 ---
 
-## 7. Swing Leg Control
+## 6. Swing Leg Control
 
 Swing legs are **kinematic problems**, not force problems.
 
-### 7.1 Raibert Heuristic
+### 6.1 Raibert Heuristic
 
 Target foot placement:
 
@@ -254,7 +254,7 @@ Anchoring to liftoff accumulates drift and destabilizes the robot.
 
 ---
 
-### 7.2 Trajectory Generation
+### 6.2 Trajectory Generation
 
 We generate a smooth swing trajectory using a **cubic Bézier curve**:
 
@@ -266,7 +266,7 @@ We generate a smooth swing trajectory using a **cubic Bézier curve**:
 
 ---
 
-### 7.3 Cartesian PD
+### 6.3 Cartesian PD
 
 At high rate (~1 kHz):
 
@@ -278,7 +278,7 @@ Swing targets are frozen at swing onset to prevent mid-air oscillations.
 
 ---
 
-## 8. Tuning Lessons (What the Papers Don't Tell You)
+## 7. Tuning Lessons (What the Papers Don't Tell You)
 
 The Q/R ratio is the primary lever: large `Q/R` gives aggressive correction but force chatter; small `Q/R` gives smooth but unresponsive behavior. An exponential moving average on the output forces reduces chatter at the cost of lag—tune both together.
 
@@ -296,7 +296,7 @@ Logs revealed this faster than intuition.
 
 ---
 
-## 9. Results
+## 8. Results
 
 - Stable standing
 - Clean trot
@@ -309,7 +309,7 @@ Showing _before_ matters. Stability is earned.
 
 ---
 
-## 10. What's Next
+## 9. What's Next
 
 Possible extensions:
 

@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+
+Host: https://prem-chand.github.io/physicalailabs
+Sitemap: https://prem-chand.github.io/physicalailabs/sitemap.xml

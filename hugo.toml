@@ -3,13 +3,13 @@ languageCode = "en-us"
 title = "Prem Chand"
 
 [params]
-description = "Controls Engineer specializing in robotics, control systems, and reinforcement learning"
+description = "Robotics AI Engineer specializing in reinforcement learning, sim-to-real transfer, and legged locomotion"
 author = "Prem Chand"
 email = "premc946@gmail.com"
 github = "prem-chand"
 twitter = "prem_chand17"
 linkedin = "premchand17"
-role = "Controls Engineer"
+role = "Controls Team Lead"
 company = "Strider Robotics"
 location = "Bengaluru, India"
 

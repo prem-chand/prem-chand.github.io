@@ -3,7 +3,7 @@ title: "About"
 description: "Prem Chand leads the controls team at Strider Robotics, working on reinforcement learning for legged robots and the sim-to-real gap"
 ---
 
-<img src="/images/profile.jpg" alt="Prem Chand" class="profile-photo profile-photo-about">
+<img src="/images/profile.jpg" alt="Prem Chand" class="profile-photo profile-photo-about" width="200" height="250" decoding="async">
 
 I lead the controls team at [Strider Robotics](https://www.strider-robotics.in/) in Bengaluru, India, where a handful of us get reinforcement learning to work on real legged robots — not just in simulation. A policy that walks beautifully in Isaac Lab usually falls over the first time it meets real friction, backlash, and motor heat, so most of my day-to-day is spent closing that gap: characterizing actuators, randomizing what we can't model perfectly, and building the test rigs and pipelines that tell us whether a policy is actually ready for hardware.
 

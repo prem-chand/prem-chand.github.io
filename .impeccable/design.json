@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-05T15:27:07Z",
+  "title": "Design System: Prem Chand",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Academic Navy Blue",
+        "canonical": "#1e40af",
+        "tonalRamp": ["#0f172a", "#1e3a8a", "#1e40af", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#dbeafe"]
+      },
+      "primary-light": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#3b82f6",
+        "tonalRamp": ["#1e3a8a", "#1e40af", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe"]
+      },
+      "primary-dark": {
+        "role": "primary",
+        "displayName": "Ink Navy",
+        "canonical": "#1e3a8a",
+        "tonalRamp": ["#0f172a", "#1e3a8a", "#1e40af", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#dbeafe"]
+      },
+      "accent-wash": {
+        "role": "primary",
+        "displayName": "Frost Wash",
+        "canonical": "#dbeafe",
+        "tonalRamp": ["#1e3a5f", "#1e40af", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe", "#eff6ff"]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Near Black Text",
+        "canonical": "#1f2937",
+        "tonalRamp": ["#111827", "#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#f3f4f6"]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Slate Secondary",
+        "canonical": "#4b5563",
+        "tonalRamp": ["#1f2937", "#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f9fafb"]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Muted Gray",
+        "canonical": "#6b7280",
+        "tonalRamp": ["#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f3f4f6", "#f9fafb"]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#111827", "#1f2937", "#374151", "#6b7280", "#d1d5db", "#e5e7eb", "#f9fafb", "#ffffff"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface Mist",
+        "canonical": "#f9fafb",
+        "tonalRamp": ["#1f2937", "#374151", "#4b5563", "#9ca3af", "#e5e7eb", "#f3f4f6", "#f9fafb", "#ffffff"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline Border",
+        "canonical": "#e5e7eb",
+        "tonalRamp": ["#374151", "#4b5563", "#6b7280", "#9ca3af", "#d1d5db", "#e5e7eb", "#f3f4f6", "#f9fafb"]
+      },
+      "code-bg": {
+        "role": "neutral",
+        "displayName": "Code Charcoal",
+        "canonical": "#282c34",
+        "tonalRamp": ["#0d1117", "#1a1d23", "#282c34", "#3e4451", "#5c6370", "#abb2bf", "#d1d5db", "#f3f4f6"]
+      },
+      "dark-primary": {
+        "role": "primary",
+        "displayName": "Sky Accent",
+        "canonical": "#60a5fa",
+        "tonalRamp": ["#1e3a8a", "#1e40af", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#dbeafe", "#eff6ff"]
+      },
+      "dark-background": {
+        "role": "neutral",
+        "displayName": "Charcoal Background",
+        "canonical": "#111827",
+        "tonalRamp": ["#030712", "#111827", "#1f2937", "#374151", "#4b5563", "#9ca3af", "#d1d5db", "#f3f4f6"]
+      },
+      "rss-accent": {
+        "role": "tertiary",
+        "displayName": "RSS Orange",
+        "canonical": "#f97316",
+        "tonalRamp": ["#9a3412", "#c2410c", "#ea580c", "#f97316", "#fb923c", "#fdba74", "#fed7aa", "#ffedd5"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero name only (3rem / 700 / -0.03em)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Article h1 and major page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles, h3, post list titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose and hero description; secondary text color."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav, meta, badges, uppercase section labels."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Inline code and fenced blocks only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "photo-lift",
+        "value": "0 4px 12px rgba(0, 0, 0, 0.1)",
+        "purpose": "Profile photo only (dark: 0.3 alpha)."
+      },
+      {
+        "name": "figure-lift",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.1)",
+        "purpose": "Article images only (dark: 0.3 alpha)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "0.2s ease",
+        "purpose": "Default color/background/border transitions."
+      }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "768px" },
+      { "name": "phone", "value": "480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Rare filled action (e.g. 404). Academic Navy, white label.",
+      "html": "<a class=\"ds-btn-primary\" href=\"/\">Back to Home</a>",
+      "css": ".ds-btn-primary { display: inline-block; padding: 0.75rem 1.5rem; background: #1e40af; color: #ffffff; border-radius: 6px; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.95rem; font-weight: 500; text-decoration: none; transition: background-color 0.2s ease; } .ds-btn-primary:hover { background: #1e3a8a; color: #ffffff; text-decoration: none; } .ds-btn-primary:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }"
+    },
+    {
+      "name": "Hero Link",
+      "kind": "button",
+      "refersTo": "hero-link",
+      "description": "Ghost social/action chip in the home hero.",
+      "html": "<a class=\"ds-hero-link\" href=\"#\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z\"/></svg>GitHub</a>",
+      "css": ".ds-hero-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #4b5563; text-decoration: none; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.95rem; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s ease; } .ds-hero-link:hover { color: #1e40af; background-color: #dbeafe; text-decoration: none; } .ds-hero-link:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; } .ds-hero-link svg { width: 18px; height: 18px; flex-shrink: 0; }"
+    },
+    {
+      "name": "Site Navigation",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Sticky dossier header: logo, text nav, theme toggle.",
+      "html": "<header class=\"ds-site-header\"><div class=\"ds-header-inner\"><a class=\"ds-logo\" href=\"/\">Prem Chand</a><nav><ul class=\"ds-nav\"><li><a href=\"/\">Home</a></li><li><a href=\"/publications/\">Publications</a></li><li><a href=\"/posts/\">Posts</a></li><li><a href=\"/about/\">About</a></li></ul></nav><button type=\"button\" class=\"ds-theme-toggle\" aria-label=\"Toggle dark mode\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"currentColor\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" d=\"M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z\" clip-rule=\"evenodd\"/></svg></button></div></header>",
+      "css": ".ds-site-header { height: 70px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-header-inner { max-width: 1000px; width: 100%; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; } .ds-logo { font-size: 1.25rem; font-weight: 700; color: #1f2937; text-decoration: none; letter-spacing: -0.02em; } .ds-logo:hover { color: #1e40af; } .ds-nav { display: flex; list-style: none; margin: 0; padding: 0; gap: 2.5rem; } .ds-nav a { text-decoration: none; color: #4b5563; font-weight: 500; font-size: 0.95rem; transition: color 0.2s ease; } .ds-nav a:hover { color: #1e40af; } .ds-nav a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; } .ds-theme-toggle { background: none; border: none; cursor: pointer; padding: 0.625rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #4b5563; transition: all 0.2s ease; } .ds-theme-toggle:hover { background-color: #f9fafb; color: #1e40af; } .ds-theme-toggle:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }"
+    },
+    {
+      "name": "Category Badge",
+      "kind": "chip",
+      "refersTo": "category-badge",
+      "description": "Primary-on-wash status chip for categories.",
+      "html": "<span class=\"ds-category-badge\">Robotics</span>",
+      "css": ".ds-category-badge { display: inline-block; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.75rem; font-weight: 600; color: #1e40af; background-color: #dbeafe; padding: 0.15rem 0.5rem; border-radius: 3px; letter-spacing: 0.01em; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Bordered surface tag; hover picks up primary wash.",
+      "html": "<a class=\"ds-tag\" href=\"#\">MPC</a>",
+      "css": ".ds-tag { display: inline-block; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.75rem; font-weight: 500; color: #4b5563; background-color: #f9fafb; border: 1px solid #e5e7eb; padding: 0.15rem 0.5rem; border-radius: 3px; text-decoration: none; transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease; } .ds-tag:hover { color: #1e40af; border-color: #1e40af; background-color: #dbeafe; } .ds-tag:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }"
+    },
+    {
+      "name": "Publication Year Chip",
+      "kind": "chip",
+      "refersTo": "publication-year",
+      "description": "Year marker for publication dossier rows.",
+      "html": "<span class=\"ds-pub-year\">2022</span>",
+      "css": ".ds-pub-year { display: inline-block; flex-shrink: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.875rem; font-weight: 600; color: #1e40af; background-color: #dbeafe; padding: 0.25rem 0.75rem; border-radius: 4px; height: fit-content; }"
+    },
+    {
+      "name": "Publication Row",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Dossier publication entry: year chip + title + authors + venue.",
+      "html": "<div class=\"ds-pub-item\"><span class=\"ds-pub-year\">2022</span><div class=\"ds-pub-content\"><h3 class=\"ds-pub-title\"><a href=\"#\">Interactive Dynamic Walking: Learning Gait Switching Policies</a></h3><p class=\"ds-pub-authors\">P. Chand, S. Veer, I. Poulakakis</p><p class=\"ds-pub-venue\">IEEE Robotics and Automation Letters 2022</p></div></div>",
+      "css": ".ds-pub-item { display: flex; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid #e5e7eb; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-pub-year { flex-shrink: 0; font-size: 0.875rem; font-weight: 600; color: #1e40af; background-color: #dbeafe; padding: 0.25rem 0.75rem; border-radius: 4px; height: fit-content; } .ds-pub-content { flex: 1; } .ds-pub-title { font-size: 1.1rem; font-weight: 600; margin: 0 0 0.5rem 0; line-height: 1.4; } .ds-pub-title a { color: #1f2937; text-decoration: none; } .ds-pub-title a:hover { color: #1e40af; text-decoration: none; } .ds-pub-title a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; } .ds-pub-authors { font-size: 0.95rem; color: #4b5563; margin: 0 0 0.25rem 0; } .ds-pub-venue { font-size: 0.875rem; color: #6b7280; font-style: italic; margin: 0; }"
+    },
+    {
+      "name": "Post List Item",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Hairline-separated writing row: date, title, excerpt.",
+      "html": "<div class=\"ds-post-item\"><p class=\"ds-post-meta\"><time>Jun 1, 2025</time></p><h3 class=\"ds-post-title\"><a href=\"#\">Model Predictive Control for Quadruped Locomotion</a></h3><p class=\"ds-post-excerpt\">A practical, end-to-end guide to MPC for legged robots—covering rigid body dynamics and contact scheduling.</p></div>",
+      "css": ".ds-post-item { padding: 1.5rem 0; border-bottom: 1px solid #e5e7eb; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; } .ds-post-meta { color: #6b7280; font-size: 0.875rem; margin: 0 0 0.5rem; font-weight: 500; } .ds-post-title { font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0; letter-spacing: -0.01em; } .ds-post-title a { color: #1f2937; text-decoration: none; } .ds-post-title a:hover { color: #1e40af; text-decoration: none; } .ds-post-title a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; } .ds-post-excerpt { color: #4b5563; font-size: 1rem; margin: 0; line-height: 1.6; }"
+    },
+    {
+      "name": "Table of Contents",
+      "kind": "custom",
+      "refersTo": "toc",
+      "description": "Surface panel with uppercase label and nested anchors.",
+      "html": "<nav class=\"ds-toc\" aria-label=\"Table of contents\"><p class=\"ds-toc-title\">Contents</p><ul><li><a href=\"#intro\">Introduction</a></li><li><a href=\"#method\">Method</a><ul><li><a href=\"#formulation\">Formulation</a></li></ul></li></ul></nav>",
+      "css": ".ds-toc { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.25rem 1.5rem; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.9rem; } .ds-toc-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin: 0 0 0.75rem 0; } .ds-toc ul { list-style: none; padding-left: 0; margin: 0; } .ds-toc ul ul { padding-left: 1.25rem; margin-top: 0.25rem; } .ds-toc li { margin-bottom: 0.35rem; color: #4b5563; } .ds-toc a { color: #4b5563; text-decoration: none; transition: color 0.2s ease; } .ds-toc a:hover { color: #1e40af; } .ds-toc a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }"
+    },
+    {
+      "name": "GitHub Callout",
+      "kind": "custom",
+      "refersTo": "github-callout",
+      "description": "Inline repo pointer for posts that ship code.",
+      "html": "<div class=\"ds-github-callout\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z\"/></svg><span>Full Python implementation:</span><a href=\"#\">prem-chand/QuadrupedMPC</a></div>",
+      "css": ".ds-github-callout { display: inline-flex; align-items: center; gap: 0.6rem; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.75rem 1.25rem; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.9rem; color: #4b5563; } .ds-github-callout svg { flex-shrink: 0; color: #1f2937; } .ds-github-callout a { font-weight: 600; color: #1e40af; text-decoration: none; } .ds-github-callout a:hover { text-decoration: underline; } .ds-github-callout a:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Research Dossier",
+    "overview": "This site is a professional research dossier first: a place for evaluators to verify who Prem Chand is, what he has published, and whether the technical depth is real. The visual system is precise, restrained, and credible—Inter sans throughout, a single academic blue voice for links and status chips, flat paper-like surfaces separated by hairline borders, and hierarchy that does the work without flourish.\n\nDensity is comfortable for reading long technical posts (body ~1.05rem / 1.7 line-height, justified prose) while remaining scanable on home: hero identity, publication years, then recent writing. Light and dark themes share the same structure; dark mode swaps the blue toward sky-blue accents and cool gray surfaces for late reading, not a second brand.\n\nConfirmed rejections: marketing SaaS aesthetics (gradient heroes, glassmorphism stacks, playful illustration, loud multi-CTA bands) and dark-academia / serif-editorial magazine drift. The dossier stays sans, flat, and blue-accented.",
+    "keyCharacteristics": [
+      "Single Inter typeface for UI and prose; mono only for code",
+      "Academic Navy Blue as the sole accent voice (≤ ~10% of any surface)",
+      "Flat surfaces + 1px borders; soft shadows only on photos/images",
+      "Sticky frosted header; max content width 1000px",
+      "Refined, restrained chrome—filled primary button is rare (404 / explicit actions)",
+      "Math (KaTeX) and code blocks are first-class reading surfaces"
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Academic Navy Blue (and its theme-mapped primary) is the only chromatic accent for interactive and status UI. Do not introduce secondary brand hues except the RSS hover orange already in CSS.",
+        "section": "colors"
+      },
+      {
+        "name": "The Paper Stack Rule",
+        "body": "Backgrounds are either paper (background) or one step of surface mist—not multi-level colored panels. Borders mark structure; color is not used to invent depth.",
+        "section": "colors"
+      },
+      {
+        "name": "The Single Family Rule",
+        "body": "Do not introduce a second display face for marketing flair. Inter owns UI and prose; mono is reserved for code.",
+        "section": "typography"
+      },
+      {
+        "name": "The Heading Hairline Rule",
+        "body": "Structural h2 and section titles earn a bottom border; do not substitute colored underlines or accent bars for ordinary headings (blockquote left bar is the exception).",
+        "section": "typography"
+      },
+      {
+        "name": "The 1000px Rule",
+        "body": "Content lives in one readable column ≤1000px. Do not expand to full-bleed marketing widths or multi-column hero showcases.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. Do not add hover card shadows or layered glass panels. Shadows stay on photographic content.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Quiet Corner Rule",
+        "body": "Prefer 3–8px radii. Avoid full pills, oversized cards, or decorative clipping paths.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do keep content within the 1000px column and preserve sticky header + single Inter stack.",
+      "Do use Academic Navy Blue (theme-mapped primary) only for links, hovers, badges, year chips, blockquote bar, and rare primary buttons.",
+      "Do separate sections and list rows with hairline borders and surface steps, not shadows.",
+      "Do treat math (KaTeX) and code blocks as first-class: keep monokai/code charcoal readable and equations unobstructed.",
+      "Do support light/dark via the existing CSS variable roles (data-theme=\"dark\").",
+      "Do aim for WCAG 2.1 AA contrast on text and interactive states (product requirement)."
+    ],
+    "donts": [
+      "Don't introduce gradient heroes, glassmorphism stacks, blob illustrations, or multi-CTA marketing bands.",
+      "Don't add a display serif or “editorial magazine” second typeface.",
+      "Don't invent a second brand color family (beyond the existing RSS orange hover exception).",
+      "Don't put box-shadows on list rows, cards, or buttons; shadows stay on photos/figures.",
+      "Don't widen to full-bleed portfolio galleries or break the flat paper reading surface for long posts.",
+      "Don't fabricate visual proof (fake metrics, logo walls, testimonial cards) that product truth forbids."
+    ]
+  }
+}
